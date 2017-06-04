@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # shine
 [s]erver-[h]osted [i]ntelligent [n]eural-net [e]nvironment
 
@@ -10,3 +11,6 @@ based on the PyGame library.
 - are interested in RL algorithm research
 - would like to test their ideas on simple 2D game environments (MDPs), which you can create using only a tiled map (tmx file)
 - 
+=======
+# aiopener
+>>>>>>> 355a08c44712cee811b0fe439c5130ba5f2e09fb
