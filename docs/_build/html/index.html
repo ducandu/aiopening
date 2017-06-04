@@ -1,0 +1,171 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Welcome to shine’s documentation! &#8212; aiopener 1.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="welcome-to-shine-s-documentation">
+<h1>Welcome to shine&#8217;s documentation!<a class="headerlink" href="#welcome-to-shine-s-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<span class="target" id="module-aiopener"></span><div class="section" id="shine-s-erver-h-osted-i-ntelligent-n-eural-net-e-nvironment">
+<h2>shine - [s]erver [h]osted [i]ntelligent [n]eural-net [e]nvironment :)<a class="headerlink" href="#shine-s-erver-h-osted-i-ntelligent-n-eural-net-e-nvironment" title="Permalink to this headline">¶</a></h2>
+<p>by Code Sourcerer
+(c) 2017 ducandu GmbH</p>
+</div>
+<span class="target" id="module-aiopener.spygame"></span><div class="section" id="spygame-pygame-extension-for-shine-library">
+<h2>spygame - Pygame extension for shine library<a class="headerlink" href="#spygame-pygame-extension-for-shine-library" title="Permalink to this headline">¶</a></h2>
+<p>__init__.py</p>
+<p>!!TODO: add file description here!!</p>
+<p>created: 2017/04/04 in PyCharm
+(c) 2017 Sven - ducandu GmbH</p>
+</div>
+<dl class="class">
+<dt id="aiopener.spygame.spygame.Component">
+<em class="property">class </em><code class="descclassname">aiopener.spygame.spygame.</code><code class="descname">Component</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aiopener/spygame/spygame.html#Component"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aiopener.spygame.spygame.Component" title="Permalink to this definition">¶</a></dt>
+<dd><p>a Component can be added to and removed from other GameObjects
+- use <cite>extend</cite> to make a Component&#8217;s method be callable directly from the owning GameObject</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>name</strong> (<em>str</em>) &#8211; the name of the component (the name can be used to retrieve any GameObject&#8217;s components via the [GameObject].components dict)</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="aiopener.spygame.spygame.Component.added">
+<code class="descname">added</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/aiopener/spygame/spygame.html#Component.added"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aiopener.spygame.spygame.Component.added" title="Permalink to this definition">¶</a></dt>
+<dd><p>gets called when the component is added to an entity</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="aiopener.spygame.spygame.Component.extend">
+<code class="descname">extend</code><span class="sig-paren">(</span><em>method</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aiopener/spygame/spygame.html#Component.extend"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aiopener.spygame.spygame.Component.extend" title="Permalink to this definition">¶</a></dt>
+<dd><p>extends the given method (has to take self as 1st param) onto the GameObject, so that this method can be called
+directly from the GameObject</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>method</strong> (<em>callable</em>) &#8211; method, which to make callable from within the owning GameObject</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="aiopener.spygame.spygame.Component.removed">
+<code class="descname">removed</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/aiopener/spygame/spygame.html#Component.removed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aiopener.spygame.spygame.Component.removed" title="Permalink to this definition">¶</a></dt>
+<dd><p>gets called when the component is removed from an entity</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></li>
+<li><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></li>
+<li><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></li>
+</ul>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Welcome to shine&#8217;s documentation!</a><ul>
+<li><a class="reference internal" href="#shine-s-erver-h-osted-i-ntelligent-n-eural-net-e-nvironment">shine - [s]erver [h]osted [i]ntelligent [n]eural-net [e]nvironment :)</a></li>
+<li><a class="reference internal" href="#spygame-pygame-extension-for-shine-library">spygame - Pygame extension for shine library</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Sven Mika.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

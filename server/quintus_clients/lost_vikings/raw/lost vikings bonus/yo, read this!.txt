@@ -1,0 +1,11 @@
+Credit goes to Zander Zoftware, for making this spritesheet from world 5, act 1 of Lost Vikings! (+ a few other levels from the game with this foreground.)
+
+ExGFX85 = FG3
+ExGFX86 = BG2 (Also this is the animation file!)
+
+The animated lazers you see are set as tile 25, meaning that if you don't use a custom death block, they won't do anything. I suppose you could set them to be munchers, but then they'd be solid...
+
+Anyways, credit to me would be pretty cool, but it's not necessary! Just enjoy the foreground, and I'm all fine with it!
+
+Cheers, and stay based all of you!
+

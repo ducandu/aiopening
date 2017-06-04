@@ -1,0 +1,8 @@
+setup.py
+aiopener/__init__.py
+aiopener/aiopener.py
+aiopener.egg-info/PKG-INFO
+aiopener.egg-info/SOURCES.txt
+aiopener.egg-info/dependency_links.txt
+aiopener.egg-info/not-zip-safe
+aiopener.egg-info/top_level.txt
