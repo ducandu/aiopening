@@ -1,0 +1,15 @@
+- start GIMP
+- new image with large canvas size e.g. 1000x1000 (Image -> Canvas Size)
+- Image->mode->Indexed
+- configure grid to be 16x16 (white) (Image->configure Grid)
+- View->show grid
+- View->snap into grid
+- Windows -> dockable Dialogs -> Layers
+- erase all layers with: right click->delete
+- screenshot + paste into GIMP
+- alt+I + a (fit canvas to layer)
+- alt+I + s (scale image)
+- scale to half, i.e. if image has width=646 -> scale to width=323 (make sure width/height are locked!)
+- press M to move image around into correct grid position
+
+- to remove black background: select tile, then use color selector (with option overlap) and pick black color within selection, then del

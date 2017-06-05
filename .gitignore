@@ -4,3 +4,4 @@
 *.egg-info
 /dist/
 *.pyc
+quintus_clients
