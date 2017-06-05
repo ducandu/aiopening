@@ -1,7 +1,7 @@
 <img src="https://github.com/sven1977/aiopener/blob/master/logo.png" width="50">
 
 # aiopener
-opening up AI - unleash the fury :)
+<b>opening up AI - unleash the fury :)</b>
 
 aiopener is a Python library for games and reinforcement learning (RL) algorithms with focus on deep-neural-nets and deep-RL.
 Games are defined as simple tmx files and each level of the game can be interpreted as a single MDP (see RL) that needs to be solved. aiopener comes with it's own 2D game engine ("spygame") written against Pygame.
@@ -14,5 +14,8 @@ There will also be an MDP-solver-server (to solve the levels of different games)
 - would like to have the aiopener server try different algorithms and hyperparameters automatically on given MDPs and return the best solutions
 
 ## the game engine (spygame)
-<b>Usage</b>
+<b>Usage</b>:
 
+```
+pip install aiopener
+```
