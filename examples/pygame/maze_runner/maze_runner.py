@@ -12,7 +12,7 @@
 
 from abc import ABCMeta
 import pygame
-import spygame as spyg
+import aiopener.spygame as spyg
 
 debug_flags = (#spyg.DEBUG_RENDER_COLLISION_TILES |
                #spyg.DEBUG_DONT_RENDER_TILED_TILE_LAYERS |

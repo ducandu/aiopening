@@ -2645,8 +2645,8 @@ class GameManager(object):
 
     """
     A Game Manager Object
-    - manages displaying the level and other screens (start screen, etc..)
-    - also keeps the Display object
+    - manages displaying the screens (start screen, menus, etc..) and playable levels (the MDPs) of the game
+    - also keeps a Display object, which is used for rendering
     """
 
     def __init__(self, screens_and_levels, width: int = 0, height: int = 0, title: str = "spygame Demo!", max_fps: int = 60, debug_flags=DEBUG_NONE):
