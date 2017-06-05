@@ -1,4 +1,4 @@
-![Logo](logo.png)
+![Logo](https://github.com/sven1977/aiopener/logo.png)
 
 # aiopener
 an eye-opening library
