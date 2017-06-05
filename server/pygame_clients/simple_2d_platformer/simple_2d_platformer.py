@@ -1,8 +1,8 @@
 from pygame import K_UP, K_DOWN
-import aiopener.spygame.spygame as spyg
-#import server.pygame_clients.simple_2d_platformer.vikings as vikings
-from . import vikings
 
+import spygame as spyg
+# import server.pygame_clients.simple_2d_platformer.vikings as vikings
+from . import vikings
 
 debug_flags = (#spyg.DEBUG_RENDER_COLLISION_TILES |
                #spyg.DEBUG_DONT_RENDER_TILED_TILE_LAYERS |

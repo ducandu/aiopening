@@ -7,7 +7,7 @@
  <tileset firstgid="1703" source="generic.tsx"/>
  <tileset firstgid="3303" source="erik.tsx"/>
  <tileset firstgid="3465" source="fireball.tsx"/>
- <layer name="goal_states" width="32" height="32" visible="0">
+ <layer name="goal_states" width="32" height="32">
   <properties>
    <property name="do_render" type="bool" value="false"/>
    <property name="goal_states" type="bool" value="true"/>

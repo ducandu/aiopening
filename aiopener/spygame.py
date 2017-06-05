@@ -21,9 +21,8 @@ import types
 import pytmx
 import sys
 import math
-import aiopener
+# import aiopener
 import re
-
 
 # some debug flags that we can set to switch on debug rendering, collision handling, etc..
 
@@ -56,6 +55,7 @@ class EventObject(object):
     Corresponds to evented class in Quintus/html5
     - NOTE: these are not pygame events!
     """
+
     def __init__(self):
         # - listeners keeps a list of callbacks indexed by event name for quick lookup
         # - a listener is an array of 2 elements: 0=target, 1=callback
@@ -177,7 +177,7 @@ class EventObject(object):
             if hasattr(self, "listeners") and event in self.listeners:
                 l = self.listeners[event]
                 # loop from the end to the beginning, which allows us to remove elements without having to affect the loop
-                for i in range(len(l)-1, -1, -1):
+                for i in range(len(l) - 1, -1, -1):
                     if l[i][0] is target:
                         if not callback or callback is l[i][1]:
                             l.pop(i)
@@ -206,22 +206,22 @@ class State(EventObject):
         # trigger an event that the value changed
         if trigger_event:
             old = self.dict[key] if key in self.dict else None
-            self.trigger_event("changed."+key, value, old)
+            self.trigger_event("changed." + key, value, old)
         # set to new value
         self.dict[key] = value
 
     # retrieve a value from the dict
     def get(self, key):
         if key not in self.dict:
-            raise(Exception, "ERROR: key {} not in dict!".format(key))
+            raise (Exception, "ERROR: key {} not in dict!".format(key))
         return self.dict[key]
 
     # decrease value by amount
-    def dec(self, key, amount: int=1):
+    def dec(self, key, amount: int = 1):
         self.dict[key] -= amount
 
     # increase value by amount
-    def inc(self, key, amount: int=1):
+    def inc(self, key, amount: int = 1):
         self.dict[key] += amount
 
 
@@ -240,7 +240,7 @@ class KeyboardInputs(EventObject):
             key_list = [[pygame.K_UP, "up"], [pygame.K_DOWN, "down"], [pygame.K_LEFT, "left"], [pygame.K_RIGHT, "right"]]
         self.update_keys(key_list)
 
-    def update_keys(self, new_key_list: Union[List[int],None]=None):
+    def update_keys(self, new_key_list: Union[List[int], None] = None):
         self.unregister_events()
         self.keyboard_registry = {}
         self.descriptions = {}
@@ -249,7 +249,7 @@ class KeyboardInputs(EventObject):
                 self.keyboard_registry[key] = False
                 self.descriptions[key] = desc
                 # signal that we might trigger the following events:
-                self.register_event("key_down."+desc, "key_up."+desc)
+                self.register_event("key_down." + desc, "key_up." + desc)
 
     def tick(self):
         """
@@ -261,10 +261,10 @@ class KeyboardInputs(EventObject):
             if e.key in self.keyboard_registry:
                 if e.type == pygame.KEYDOWN:
                     self.keyboard_registry[e.key] = True
-                    self.trigger_event("key_down."+self.descriptions[e.key])
+                    self.trigger_event("key_down." + self.descriptions[e.key])
                 else:
                     self.keyboard_registry[e.key] = False
-                    self.trigger_event("key_up."+self.descriptions[e.key])
+                    self.trigger_event("key_up." + self.descriptions[e.key])
 
 
 class GameObject(EventObject):
@@ -341,11 +341,11 @@ class SpriteSheet(object):
     loads a spritesheet from a tsx file and assigns frames to each sprite (Surface) in the sheet
     """
 
-    def __init__(self, file):
+    def __init__(self, file, store_flips: Union[dict, None]=None):
         try:
             tree = xml.etree.ElementTree.parse(file)
         except:
-            raise("ERROR: could not open xml file: {}".format(file))
+            raise ("ERROR: could not open xml file: {}".format(file))
 
         elem = tree.getroot()
         props = elem.attrib
@@ -355,9 +355,15 @@ class SpriteSheet(object):
         self.count = int(props["tilecount"])
         self.cols = int(props["columns"])
         self.tiles = []  # the list of all Surfaces
-        self.tile_props_by_id = {}
+        self.tiles_flipped_x = []  # the list of all Surfaces (flipped on x-axis)
+        self.tiles_flipped_y = []  # the list of all Surfaces (flipped on y-axis)
+        self.tiles_flipped_xy = []  # the list of all Surfaces (flipped on both axes)
 
-        # assert (tilesets.length == 1, "Not exactly 1 tileset found in tsx file " + tsx + "!");
+        self.tile_props_by_id = {}  # contains tile properties set in the tmx file for each tile by tile ID
+
+        # by default, only flip on x-axis (usually that's enough for 2D games)
+        if not store_flips:
+            store_flips = {"x": True, "y": False}
 
         for child in elem:
             # the image asset -> load and save all Surfaces
@@ -366,7 +372,7 @@ class SpriteSheet(object):
                 self.w = int(props["width"])
                 self.h = int(props["height"])
                 image_file = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(file)), os.path.relpath(props["source"])))
-                #image_file = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(file)), os.path.relpath("../images/debug.png")))
+                # image_file = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(file)), os.path.relpath("../images/debug.png")))
                 image = pygame.image.load(image_file).convert_alpha()
                 col = -1
                 row = 0
@@ -376,8 +382,17 @@ class SpriteSheet(object):
                         col = 0
                         row += 1
                     surf = pygame.Surface((self.tw, self.th), flags=pygame.SRCALPHA)
-                    surf.blit(image, (0, 0), area=pygame.Rect(col*self.tw, row*self.th, self.tw, self.th))  # blits the correct frame of the image to this new surface
+                    surf.blit(image, (0, 0),
+                              area=pygame.Rect(col * self.tw, row * self.th, self.tw, self.th))  # blits the correct frame of the image to this new surface
                     self.tiles.append(surf)
+                    # do the necessary flippings (will save time later when rendering the Sprite)
+                    if store_flips["x"]:
+                        surf_x_flipped = pygame.transform.flip(surf, True, False)
+                        self.tiles_flipped_x.append(surf_x_flipped)
+                        if store_flips["y"]:  # x and y
+                            self.tiles_flipped_xy.append(pygame.transform.flip(surf_x_flipped, False, True))
+                    if store_flips["y"]:
+                        self.tiles_flipped_y.append(pygame.transform.flip(surf, False, True))
 
             # single tiles (and their properties)
             elif child.tag == "tile":
@@ -396,7 +411,7 @@ class SpriteSheet(object):
                                     val = int(val) if type_ == "int" else float(val) if type_ == "float" else val
                             self.tile_props_by_id[id_][prop.attrib["name"]] = val
                     else:
-                        raise("ERROR: expected only <properties> tag within <tile> in tsx file {}".format(file))
+                        raise ("ERROR: expected only <properties> tag within <tile> in tsx file {}".format(file))
 
 
 class Sprite(GameObject, pygame.sprite.Sprite):
@@ -436,7 +451,7 @@ class Sprite(GameObject, pygame.sprite.Sprite):
             Sprite.next_type *= 2
         return Sprite.types[type]
 
-    def __init__(self, x: int, y: int, spritesheet_or_wh: Union[SpriteSheet, Tuple[int], None]=None):
+    def __init__(self, x: int, y: int, spritesheet_or_wh: Union[SpriteSheet, Tuple[int], None] = None):
         pygame.sprite.Sprite.__init__(self)
         GameObject.__init__(self)
 
@@ -469,6 +484,47 @@ class Sprite(GameObject, pygame.sprite.Sprite):
 
         self.register_event("added_to_stage")  # allow any Stage to trigger this event using this Sprite
 
+    def move(self, x: int, y: int, precheck: bool = False):
+        """
+        moves us by x/y pixels
+        OBSOLETE: - if precheck is set to True: pre-checks the planned move via call to stage.locate and only moves entity as far as possible
+        Args:
+            sprite (Sprite): the Sprite to move (our GameObject)
+            x (int): amount in which to move in x direction
+            y (int): amount in which to move in y direction
+            precheck (bool): ???
+
+        Returns:
+
+        """
+        """if (precheck) {
+            var testcol = this.stage.locate(p.x+x, p.y+y, Q._SPRITE_DEFAULT, p.w, p.h);
+            if ((!testcol) || (testcol.tileprops && testcol.tileprops['liquid'])) {
+                return true;
+            }
+            return false;
+        }"""
+
+        self.rect.x += x
+        self.rect.y += y
+
+        # TODO: move the obj_to_follow into collide of stage (stage knows its borders best, then we don't need to define xmax/xmin, etc.. anymore)
+        # TODO: maybe we could even build a default collision-frame around every stage when inserting the collision layer
+        """
+        if sprite.rect.x < self.x_min:
+            sprite.rect.x = self.x_min
+            self.vx = 0
+        elif sprite.rect.x > self.x_max:
+            sprite.rect.x = self.x_max
+            self.vx = 0
+        if sprite.rect.y < self.y_min:
+            sprite.rect.y = self.y_min
+            self.vy = 0
+        elif sprite.rect.y > self.y_max:
+            sprite.rect.y = self.y_max
+            self.vy = 0
+        """
+
     # @override(GameObject)
     def destroy(self):
         super().destroy()
@@ -483,7 +539,6 @@ class Sprite(GameObject, pygame.sprite.Sprite):
 
     def render(self, display):
         if self.image:
-            self.image = pygame.transform.flip(self.image, self.flip['x'], self.flip['y'])
             display.surface.blit(self.image, (self.rect.x + display.offsets[0], self.rect.y + display.offsets[1]))
         if DEBUG_FLAGS & DEBUG_RENDER_SPRITES_RECTS:
             pygame.draw.rect(display.surface, DEBUG_RENDER_SPRITES_RECTS_COLOR, pygame.Rect((self.rect.x, self.rect.y), (self.rect.w, self.rect.h)), 1)
@@ -491,12 +546,22 @@ class Sprite(GameObject, pygame.sprite.Sprite):
 
 class AnimatedSprite(Sprite):
     """
-    only adds an Animation component to each instance
+    adds an Animation component to each instance
+
+    :param int x: the initial x position of the Sprite
+    :param int y: the initial y position of the Sprite
+    :param SpriteSheet spritesheet: the SpriteSheet object to use for this Sprite
+    :param dict animation_setup: the dictionary with the animation setup data to be sent to Animation.register_settings (the name of the registry record will
+            be spritesheet.name)
     """
-    def __init__(self, x: int, y: int, spritesheet):
-            super().__init__(x, y, spritesheet)  # assign the image/rect for the Sprite
-            self.register_event("post_tick")
-            self.cmp_animation = self.add_component(Animation("animation"))
+    def __init__(self, x: int, y: int, spritesheet, animation_setup: dict):
+        super().__init__(x, y, spritesheet)  # assign the image/rect for the Sprite
+        self.register_event("post_tick")
+        self.cmp_animation = self.add_component(Animation("animation"))
+
+        Animation.register_settings(spritesheet.name, animation_setup, register_events_on=self)
+        # play the default animation
+        self.play_animation(animation_setup["default"])
 
 
 class Display(object):
@@ -506,7 +571,8 @@ class Display(object):
     a simple wrapper class for a pygame.display/pygame.Surface object representing the pygame display
     - also stores offset information
     """
-    def __init__(self, width: int=600, height: int=400, title="Spygame Rocks!"):
+
+    def __init__(self, width: int = 600, height: int = 400, title="Spygame Rocks!"):
         assert not Display.instantiated, "ERROR: can only create one {} object!".format(type(self).__name__)
         Display.instantiated = True
 
@@ -606,7 +672,7 @@ class GameLoop(object):
             # do nothing
             return None
 
-    def __init__(self, callback: callable, display: Display, keyboard_inputs: KeyboardInputs=None, max_fps=60):
+    def __init__(self, callback: callable, display: Display, keyboard_inputs: KeyboardInputs = None, max_fps=60):
         """
 
         Args:
@@ -649,7 +715,7 @@ class GameLoop(object):
         events = pygame.event.get(pygame.QUIT)  # TODO: add more here?
         for e in events:
             if e.type == pygame.QUIT:
-                raise(SystemExit, "QUIT")
+                raise (SystemExit, "QUIT")
 
         # collect keyboard events
         self.keyboard_inputs.tick()
@@ -750,7 +816,7 @@ class Stage(GameObject):
         Stage.active_stage = 0
 
     @staticmethod
-    def render_stages(display: Display, refresh_after_render: bool=False):
+    def render_stages(display: Display, refresh_after_render: bool = False):
         """
         loops through all Stages and renders all of them
         Args:
@@ -782,7 +848,7 @@ class Stage(GameObject):
             Stage.clear_stage(i)
 
     @staticmethod
-    def get_stage(idx=Union[int,None]):
+    def get_stage(idx=Union[int, None]):
         if idx is None:
             idx = Stage.active_stage
         return Stage.stages[idx]
@@ -790,25 +856,21 @@ class Stage(GameObject):
     @staticmethod
     def stage_scene(scene: Scene, stage_idx=None, options=None):
         """
-        
-        Args:
-            scene (Scene): the Scene object to execute in order to populate the Stage
-            stage_idx (int): the Stage index to use
-            options (dict): options to be used when instantiating the Stage
-
-        Returns:
-            the new Stage object
-
         supported options are:
         - stage_idx (int): sets the stage index to use (0-9)
         - stage_class (class): sets the class (must be a Stage class) to be used when creating the new Stage
         - force_loop (bool): if set to True and we currently have a GameLoop running, stop the current GameLoop and replace it with a new one, which has
-                                to be given via the "game_loop" option (as GameLoop object, or as string "new" for a default GameLoop) 
+                                to be given via the "game_loop" option (as GameLoop object, or as string "new" for a default GameLoop)
         - keyboard_inputs (KeyboardInputs): the KeyboardInputs object to use for the new GameLoop
         - display (Display): the Display to use for the new GameLoop
         - screen_obj (Screen): if no keyboard_inputs and/or display are given, we will take these information from the screen_obj
         - components (List[Component]): a list of Component objects to add to the new Stage (e.g. a Viewport)
 
+        :param Scene scene: the Scene object to execute in order to populate the Stage
+        :param int stage_idx: the Stage index to use
+        :param dict options: options to be used when instantiating the Stage
+        :return: the new Stage object
+        :rtype: Stage
         """
         # if it's a string, find a registered scene by that name
         if isinstance(scene, str):
@@ -841,7 +903,7 @@ class Stage(GameObject):
         # finally return the stage to the user for use if needed
         return stage
 
-    def __init__(self, scene: Scene=None, options=None):
+    def __init__(self, scene: Scene = None, options=None):
         super().__init__()
         self.tiled_layers = {}  # pytmx.pytmx.TiledLayer (TiledTileLayer or TiledObjectGroup) by name
         self.tiled_layers_to_render = []  # list of all layers by name (TiledTileLayers AND TiledObjectGroups) in the order in which they have to be rendered
@@ -923,9 +985,15 @@ class Stage(GameObject):
         if isinstance(pytmx_layer, pytmx.pytmx.TiledObjectGroup):
             l = TiledObjectGroup(pytmx_layer, pytmx_tiled_map)
         elif isinstance(pytmx_layer, pytmx.pytmx.TiledTileLayer):
-            assert "tile_layer_physics_collision_handler" in self.options,\
+            # use default collision objects if not given
+            if "tile_layer_physics_collisions" not in self.options:
+                self.options["tile_layer_physics_collisions"] = (Collision(), Collision())
+            assert "tile_layer_physics_collision_detector" in self.options, \
+                "ERROR: a TiledTileLayer needs a physics collision detector given in the Stage's option: `tile_layer_physics_collision_detector`!"
+            assert "tile_layer_physics_collision_handler" in self.options, \
                 "ERROR: a TiledTileLayer needs a physics collision handler given in the Stage's option: `tile_layer_physics_collision_handler`!"
-            l = TiledTileLayer(pytmx_layer, pytmx_tiled_map, self.options["tile_layer_physics_collision_handler"])
+            l = TiledTileLayer(pytmx_layer, pytmx_tiled_map, self.options["tile_layer_physics_collisions"],
+                               self.options["tile_layer_physics_collision_detector"], self.options["tile_layer_physics_collision_handler"])
             # put the pytmx_layer into one of the collision groups (normal or touch)?
             # - this is useful for our solve_collisions method
             if l.type != Sprite.get_type("none"):
@@ -941,8 +1009,8 @@ class Stage(GameObject):
 
         # if layer is a TiledObjectGroup -> add the (already existing) sprite-group to this stage under the name of the layer
         if isinstance(l, TiledObjectGroup):
-            assert l.name not in self.sprite_groups,\
-                "ERROR: trying to add a TiledObjectGroup to a Stage, but the Stage already has a spritegroup with the name of that layer ({})".\
+            assert l.name not in self.sprite_groups, \
+                "ERROR: trying to add a TiledObjectGroup to a Stage, but the Stage already has a spritegroup with the name of that layer ({})". \
                     format(l.name)
             self.sprite_groups[l.name] = l.sprite_group
             for sprite in l.sprite_group.sprites():
@@ -952,7 +1020,7 @@ class Stage(GameObject):
         """
         adds a new sprite to an existing or a new Group
         Args:
-            sprite (spyg.GameObject): the GameObject to be added
+            sprite (GameObject): the GameObject to be added
             group_name (str): the name of the group to which the GameObject should be added (group will not be created if it doesn't exist yet)
         """
         # if the group doesn't exist yet, create it
@@ -994,8 +1062,6 @@ class Stage(GameObject):
         look for the objects layer and do each object against the main collision layer
         - some objects in the objects layer do their own collision -> skip those here (e.g. ladder climbing objects)
         - after the main collision layer, do each object against each other
-        Returns:
-            
         """
         # collide each object with all collidable layers (matching collision mask of object)
         for sprite in self.sprites:
@@ -1022,9 +1088,14 @@ class Stage(GameObject):
                         # TODO: do we have to trigger the reversed collision as well?
                         sprite.trigger_event("collision", col)
 
-    # gets called each frame by the GameLoop
-    # - calls update on all its Sprites (through 'updateSprites')
-    def tick(self, game_loop: GameLoop):
+    def tick(self, game_loop):
+        """
+        gets called each frame by the GameLoop
+        - calls update on all its Sprites (through 'updateSprites')
+
+        :param GameLoop game_loop: the GameLoop object that's currently running (and ticking all Stages)
+        """
+
         if self.is_paused:
             return False
 
@@ -1051,29 +1122,37 @@ class Stage(GameObject):
         self.trigger_event("post_tick", game_loop)
 
     def hide(self):
+        """
+        hides the Stage
+        """
         self.is_hidden = True
 
     def show(self):
+        """
+        unhides the Stage
+        """
         self.is_hidden = False
 
     def stop(self):
+        """
+        stops playing the Stage (stops calling `tick` on all GameObjects)
+        """
         self.hide()
         self.pause()
 
     def start(self):
+        """
+        starts running the Stage (and calling all GameObject's `tick` method)
+        """
         self.show()
         self.unpause()
 
-    # gets called each frame by the GameLoop (after 'tick' is called on all Stages)
-    # - renders all GameObjects
     def render(self, display: Display):
         """
-        renders the Stage with all it's renderable objects (GameObjects)
-        Args:
-            display (Display): the Display object to render on
+        gets called each frame by the GameLoop (after 'tick' is called on all Stages)
+        - renders all GameObjects
 
-        Returns:
-
+        :param Display display: the Display object to render on
         """
         if self.is_hidden:
             return False
@@ -1089,8 +1168,11 @@ class TmxLayer(object, metaclass=ABCMeta):
     a wrapper class for the pytmx TiledObject class that can either represent a TiledTileLayer
     or a TiledObjectGroup
     - needs to implement render and stores some spygame specific properties such as collision, render, etc.
+
+    :param pytmx.pytmx.TiledElement tmx_layer_obj: the underlying pytmx TiledTileLayer
+    :param pytmx.pytmx.TiledMap tmx_tiled_map: the underlying pytmx TiledMap object (representing the tmx file)
     """
-    def __init__(self, tmx_layer_obj: pytmx.TiledElement, tmx_tiled_map: pytmx.TiledMap):
+    def __init__(self, tmx_layer_obj, tmx_tiled_map):
         self.pytmx_layer = tmx_layer_obj
         self.pytmx_tiled_map = tmx_tiled_map
         self.name = tmx_layer_obj.name
@@ -1110,8 +1192,13 @@ class TiledTileLayer(TmxLayer):
     a wrapper class for pytmx.pytmx.TiledTileLayer, which represents a normal tile layer in a tmx file
     - reads in all tiles' images into one Surface object so we can render the entire layer at once
     - implements `render`
+
+    :param pytmx.pytmx.TiledTileLayer pytmx_layer: the underlying pytmx TiledTileLayer
+    :param pytmx.pytmx.TiledMap pytmx_tiled_map: the underlying pytmx TiledMap object (representing the tmx file)
+    :param callable collision_detector: the function to use for detecting collisions (e.g. spyg.SATCollision/spyg.AABBCollision/etc..)
+    :param callable collision_handler: the function to use to handle collisions (once detected by the collision_detector)
     """
-    def __init__(self, pytmx_layer: pytmx.pytmx.TiledTileLayer, pytmx_tiled_map: pytmx.pytmx.TiledMap, tile_layer_physics_collision_handler: callable):
+    def __init__(self, pytmx_layer, pytmx_tiled_map, collision_objects, collision_detector, collision_handler):
         super().__init__(pytmx_layer, pytmx_tiled_map)
 
         self.type_str = self.properties.get("type", "none")
@@ -1119,10 +1206,14 @@ class TiledTileLayer(TmxLayer):
 
         self.props_by_pos = {}  # stores the properties of each tile by position tuple (x, y)
         # an object representing a single tile from this layer to pass to a collision function
-        self.tile_game_obj = TileSprite(pytmx_layer, pytmx_tiled_map, pygame.Rect((0, 0), (self.pytmx_tiled_map.tilewidth, self.pytmx_tiled_map.tileheight)))
-        self.tile_layer_physics_collision_handler = tile_layer_physics_collision_handler
+        self.tile_sprite = TileSprite(pytmx_layer, pytmx_tiled_map, pygame.Rect((0, 0), (self.pytmx_tiled_map.tilewidth, self.pytmx_tiled_map.tileheight)))
         # store our tuple of two Collision objects for passing into the collision handler
-        self.collision_objs = self.tile_layer_physics_collision_handler("get_collision_objects")  # gets the base/default Collision object (depends on physics)
+        assert isinstance(collision_objects, tuple) and len(collision_objects) == 2 and \
+            isinstance(collision_objects[0], Collision) and isinstance(collision_objects[1], Collision), \
+            "ERROR: parameter collision_objects needs to be a tuple of two Collision objects!"
+        self.collision_objects = collision_objects
+        self.collision_detector = collision_detector
+        self.collision_handler = collision_handler
 
         # get collision mask of this layer from self.collision property
         types_ = self.type_str.split(",")
@@ -1130,7 +1221,7 @@ class TiledTileLayer(TmxLayer):
             self.type |= Sprite.get_type(t)
 
         # update do_render indicator depending on some debug settings
-        self.do_render = (self.do_render and not (DEBUG_FLAGS & DEBUG_DONT_RENDER_TILED_TILE_LAYERS)) or\
+        self.do_render = (self.do_render and not (DEBUG_FLAGS & DEBUG_DONT_RENDER_TILED_TILE_LAYERS)) or \
                          (self.type != Sprite.get_type("none") and (DEBUG_FLAGS & DEBUG_RENDER_COLLISION_TILES))
         # put this layer in one single Sprite that we can then blit on the display (with 'area=' to avoid drawing the entire layer each time)
         self.pygame_sprite = None
@@ -1171,7 +1262,7 @@ class TiledTileLayer(TmxLayer):
                 # go through dict and translate data types into proper python types ("true" -> bool, 0.0 -> float, etc..)
                 for key, value in tile_props.items():
                     # bool
-                    if value == "true" or value =="false":
+                    if value == "true" or value == "false":
                         value = (value == "true")
                     # int
                     elif re.fullmatch('\d+', str(value)):
@@ -1205,31 +1296,26 @@ class TiledTileLayer(TmxLayer):
         # TODO: we shouldn't have to do this each render, just once (display size does not change)
         r.width = display.surface.get_width()
         r.height = display.surface.get_height()
-        display.surface.blit(self.pygame_sprite.image, dest=(0,0), area=r)
+        display.surface.blit(self.pygame_sprite.image, dest=(0, 0), area=r)
 
     # solves collisions between this tile layer and any Sprite (depends on the velocity of the Sprite)
-    def collide(self, sprite: Sprite, vx: float=0.0, vy: float=0.0):
-        assert vx == 0.0 or vy == 0.0, "ERROR: one of vx or vy has to be 0.0!"
+    def collide(self, sprite: Sprite, direction='x', direction_veloc=1.0):
         # determine the tile steps (left/right up/down)
-        direction_x = int(math.copysign(1.0, vx))
-        direction_y = int(math.copysign(1.0, vy))
+        direction_x = 1
+        direction_y = 1
+        if direction == 'x':
+            direction_x = int(math.copysign(1.0, direction_veloc))
+        else:
+            direction_y = int(math.copysign(1.0, direction_veloc))
 
-        max_lookahead = 5  # how many tiles (max) to look ahead?
-        # TODO: right now: only assuming negative vx and vy==0.0
         tile_start_x = sprite.rect.left // self.pytmx_tiled_map.tilewidth
-        tile_end_x = max(tile_start_x - max_lookahead, 0)
+        tile_end_x = sprite.rect.right // self.pytmx_tiled_map.tilewidth
         tile_start_y = sprite.rect.top // self.pytmx_tiled_map.tileheight
         tile_end_y = sprite.rect.bottom // self.pytmx_tiled_map.tileheight
 
-        #    int(math.floor(sprite.rect.x / self.pytmx_tiled_map.tilewidth))
-        #tile_start_y = int(math.floor(sprite.rect.y / self.pytmx_tiled_map.tilewidth))
-        #tile_end_x = int(math.ceil((sprite.rect.x + sprite.rect.width) / self.pytmx_tiled_map.tilewidth))
-        #tile_end_y = int(math.ceil((sprite.rect.y + sprite.rect.height) / self.pytmx_tiled_map.tilewidth))
-        #tiles_done = set()  # keep track of already processed tiles
-
         if DEBUG_FLAGS & DEBUG_RENDER_ACTIVE_COLLISION_TILES:
-            for tile_y in range(tile_start_y, tile_end_y, direction_y):
-                for tile_x in range(tile_start_x, tile_end_x, direction_x):
+            for tile_y in range(tile_start_y, tile_end_y + 1):
+                for tile_x in range(tile_start_x, tile_end_x + 1):
                     pygame.draw.rect(GameLoop.active_loop.display.surface, DEBUG_RENDER_ACTIVE_COLLISION_TILES_COLOR,
                                      pygame.Rect((tile_x * self.pytmx_tiled_map.tilewidth, tile_y * self.pytmx_tiled_map.tileheight),
                                                  (self.pytmx_tiled_map.tilewidth, self.pytmx_tiled_map.tileheight)), 1)
@@ -1249,16 +1335,15 @@ class TiledTileLayer(TmxLayer):
         #     (which means, if we find a collision with a slope-2-offset-1-tile and the character is already touching the next tile with its right-x-corner, we pick the next tile (if it's also a slope 2, etc...)
         # - pick the first collision and return it
         # - make sure each tile is only checked once for collisions (use tileFlags hash to tag tiles as "already processed")
-        # TODO: make sure it works with generic obj and tile sizes (e.g. enemies bigger than the vikings, e.g. 64x64)
         # - the order of the tiles we loop through is bottom-up and in direction of characters running direction (objp.vx)
-        for tile_y in range(tile_start_y, tile_end_y, direction_y):
-            for tile_x in range(tile_start_x, tile_end_x, direction_x):
+        for tile_y in range(tile_start_y, tile_end_y + direction_y, direction_y):
+            for tile_x in range(tile_start_x, tile_end_x + direction_x, direction_x):
+                tile_xy = (tile_x, tile_y)
 
                 ## tile already processed?
-                #tile_xy = (tile_x, tile_y)
-                #if tile_xy in tiles_done:
+                # if tile_xy in tiles_done:
                 #    continue
-                #tiles_done.add(tile_xy)
+                # tiles_done.add(tile_xy)
 
                 tile_props = self.props_by_pos.get(tile_xy)
 
@@ -1266,28 +1351,29 @@ class TiledTileLayer(TmxLayer):
                 if tile_props is None or tile_props.get("no_collision"):
                     continue
 
-                # set up our collision object
-                self.tile_game_obj.tile_x = tile_x
-                self.tile_game_obj.tile_y = tile_y
-                self.tile_game_obj.rect.x = tile_x * self.pytmx_tiled_map.tilewidth
-                self.tile_game_obj.rect.y = tile_y * self.pytmx_tiled_map.tileheight
-                self.tile_game_obj.tile_props = tile_props
+                # set up our TileSprite (a Sprite that represents a single tile) for the collision detector
+                self.tile_sprite.tile_x = tile_x
+                self.tile_sprite.tile_y = tile_y
+                self.tile_sprite.rect.x = tile_x * self.pytmx_tiled_map.tilewidth
+                self.tile_sprite.rect.y = tile_y * self.pytmx_tiled_map.tileheight
+                self.tile_sprite.tile_props = tile_props
 
                 # TODO: exclude collisions such as: where Nx=-1 with tiles that have a left x-neighbor (impossible!), OR where Nx=1 with a right x-neighbor, etc..
                 #       those collisions could cause a running character to get x-stuck in a floor-tile (and then play "push"-animation instead of "run"-animation)
 
-                # check the actual collision
-                col = SATCollision.collide(sprite, self.tile_game_obj, self.collision_objs)
+                # check the actual collision with our collision detector
+                col = self.collision_detector(sprite, self.tile_sprite, self.collision_objects, direction=direction, direction_veloc=direction_veloc)
 
-                # we got a new collision with this tile -> process collision via our physics and return
+                # we got a new collision with this tile -> process collision via our handler and return
                 if col and col.is_collided and col.magnitude > 0:
-                    col = self.tile_layer_physics_collision_handler(col)
-                    # return first tile that gives us a collision
+                    col = self.collision_handler(col)
+                    # collision is still ok (after processing via handler) -> trigger collision event on Sprite
                     if col:
-                        # trigger the event
                         sprite.trigger_event("collision", col)
+                        # return after the first tile collided with Sprite
                         return col
                     else:
+                        # keep looking for other tiles that might collide
                         continue
 
         return None  # no collision
@@ -1297,7 +1383,8 @@ class TileSprite(Sprite):
     """
     extension class for GameObject that represents a single tile in a TiledTileLayer
     """
-    def __init__(self, layer: TiledTileLayer, pytmx_tiled_map: pytmx.pytmx.TiledMap, rect: Union[pygame.Rect, None]=None):
+
+    def __init__(self, layer: TiledTileLayer, pytmx_tiled_map: pytmx.pytmx.TiledMap, rect: Union[pygame.Rect, None] = None):
         self.tiled_tile_layer = layer
         self.pytmx_tiled_map = pytmx_tiled_map
         self.tile_w = self.pytmx_tiled_map.tilewidth  # the width of the tile that was hit
@@ -1315,6 +1402,7 @@ class TiledObjectGroup(TmxLayer):
     - generates all GameObjects specified in the layer
     - implements `render` by looping through all GameObjects and rendering their Sprites one by one
     """
+
     def __init__(self, pytmx_layer: pytmx.pytmx.TiledObjectGroup, pytmx_tiled_map: pytmx.pytmx.TiledMap):
         super().__init__(pytmx_layer, pytmx_tiled_map)
 
@@ -1325,10 +1413,12 @@ class TiledObjectGroup(TmxLayer):
         for obj in self.pytmx_layer:
             obj_props = obj.properties
 
+            # if the class of the object is given, construct it here using its c'tor
+            # - classes are given as strings: e.g. sypg.Sprite, vikings.Viking, Agent (class is in __main__ module)
             if "class" in obj_props:
                 match_obj = re.fullmatch('^((.+)\.)?(\w+)$', obj_props["class"])
                 assert match_obj, "ERROR: class property in pytmx.pytmx.TiledObjectGroup does not match pattern!"
-                _, module_, class_ = match_obj.groups(default=__name__)  # if no module given, assume a spygame class
+                _, module_, class_ = match_obj.groups(default="__main__")  # if no module given, assume a class defined in __main__
                 spritesheet = SpriteSheet("data/" + obj_props["tsx"] + ".tsx")
                 class_instance = getattr(sys.modules[module_], class_)(obj.x, obj.y, spritesheet)
 
@@ -1346,23 +1436,26 @@ class Collision(object):
     a simple feature object that stores collision properties for collisions between two objects
     or between an object and a TiledTileLayer
     """
+
     def __init__(self):
         self.sprite1 = None  # hook into the first Sprite participating in this collision
         self.sprite2 = None  # hook into the second Sprite participating in this collision (this could be a TileSprite)
         self.is_collided = True  # True if a collision happened (usually True)
-        self.separate = [0, 0]  # ???
-        self.magnitude = 0  # ???
-        self.distance = 0  # ???
-        self.normal_x = 0.0  # ???
-        self.normal_y = 0.0  # ???
+        self.distance = 0  # how much do we have to move sprite1 to separate the two Sprites? (always negative)
+        self.magnitude = 0  # abs(distance)
+        self.normal_x = 0.0  # x-component of the collision normal
+        self.normal_y = 0.0  # y-component of the collision normal
+        self.separate = [0, 0]  # (distance * normal_x, distance * normal_y)
 
 
 class PlatformerCollision(Collision):
     """
     a collision object that can be used by PlatformerPhysics to handle Collisions
     """
+
     def __init__(self):
         super().__init__()
+        self.impact = 0.0  # the impulse of the collision on some mass (used for pushing heavy objects)
         self.slope = False  # whether this is a slope collision
         self.sl = 0  # 0=no slope, -1=down slope, 1 = up slope
         self.x_in = 0  # the amount in pixels by which an object is "stuck" during a slope collision
@@ -1375,6 +1468,7 @@ class Component(GameObject, metaclass=ABCMeta):
 
     :param str name: the name of the component (the name can be used to retrieve any GameObject's components via the [GameObject].components dict)
     """
+
     def __init__(self, name):
         super().__init__()
         self.name = name
@@ -1412,7 +1506,8 @@ class Brain(Component):
     a brain class that handles agent control (via RL and/or keyboard)
     - sets self.commands each tick depending on keyboard input and/or RL algorithm
     """
-    def __init__(self, name: str, commands: Union[list,None]):
+
+    def __init__(self, name: str, commands: Union[list, None]):
         super().__init__(name)
         if commands is None:
             commands = []
@@ -1443,7 +1538,6 @@ class Brain(Component):
 
 
 class Animation(Component):
-
     # static animation-properties registry
     # - stores single animation records (these are NOT Animation objects, but simple dicts representing settings for single animation sequences)
     animation_settings = {}
@@ -1460,23 +1554,26 @@ class Animation(Component):
     def register_settings(settings_name, settings, register_events_on=None):
         # we do not have this name registered yet
         if settings_name not in Animation.animation_settings:
+            assert "default" in settings, "ERROR: no entry `default` in animation-settings. Each settings block needs a default animation name."
             for anim in settings:
-                defaults(settings[anim], {
-                    "rate": 1/3,  # the rate with which to play this animation in 1/s
-                    "frames": [0, 1],  # the frames to play from our spritesheet (starts with 0)
-                    "priority": -1,  # which priority to use for next if next is given
-                    "flags": Animation.ANIM_NONE,  # flags bitmap that determines the behavior of the animation (e.g. block controls during animation play, etc..)
-                    "loop": True,  # whether to loop the animation when done
-                    "next": None,  # which animation to play next
-                    "next_priority": -1,  # which priority to use for next if next is given
-                    "trigger": None,  # which events to trigger on the game_object that plays this animation
-                    "trigger_data": None,  # data to pass to the event handler if trigger is given
-                    "keys_status": {},  # ??? can override DISABLE_MOVEMENT setting only for certain keys
-                })
+                if anim != "default":
+                    defaults(settings[anim], {
+                        "rate"         : 1 / 3,  # the rate with which to play this animation in 1/s
+                        "frames"       : [0, 1],  # the frames to play from our spritesheet (starts with 0)
+                        "priority"     : -1,  # which priority to use for next if next is given
+                        "flags"        : Animation.ANIM_NONE,
+                    # flags bitmap that determines the behavior of the animation (e.g. block controls during animation play, etc..)
+                        "loop"         : True,  # whether to loop the animation when done
+                        "next"         : None,  # which animation to play next
+                        "next_priority": -1,  # which priority to use for next if next is given
+                        "trigger"      : None,  # which events to trigger on the game_object that plays this animation
+                        "trigger_data" : None,  # data to pass to the event handler if trigger is given
+                        "keys_status"  : {},  # ??? can override DISABLE_MOVEMENT setting only for certain keys
+                    })
             Animation.animation_settings[settings_name] = settings
 
         if isinstance(register_events_on, EventObject):
-            l = list(chain.from_iterable(("anim."+anim, "anim_loop."+anim, "anim_end."+anim) for anim in settings))
+            l = list(chain.from_iterable(("anim." + anim, "anim_loop." + anim, "anim_end." + anim) for anim in settings))
             register_events_on.register_event(*l)
 
     @staticmethod
@@ -1488,7 +1585,7 @@ class Animation(Component):
     def __init__(self, name: str):
         super().__init__(name)
         self.animation = None  # str: if set to something, we are playing this animation
-        self.rate = 1/3  # default rate in s
+        self.rate = 1 / 3  # default rate in s
         self.has_changed = False
         self.priority = -1  # animation priority (takes the value of the highest priority animation that wants to be played simultaneously)
         self.frame = 0  # the current frame in the animation 'frames' list
@@ -1550,7 +1647,7 @@ class Animation(Component):
                     if anim_settings["loop"] is False or anim_settings["next"]:
                         self.frame = len(anim_settings["frames"]) - 1
                         obj.trigger_event("anim_end")
-                        obj.trigger_event("anim_end."+self.animation)
+                        obj.trigger_event("anim_end." + self.animation)
                         self.priority = -1
                         if anim_settings["trigger"]:
                             obj.trigger_event(anim_settings["trigger"], anim_settings["trigger_data"])
@@ -1565,11 +1662,24 @@ class Animation(Component):
 
                 obj.trigger_event("anim_frame")
 
-            obj.image = None if self.is_hidden else obj.spritesheet.tiles[anim_settings["frames"][int(self.frame)]]
+            # assign the correct image to the `image` field of the GameObject (already correctly x/y-flipped)
+            # hidden: no image
+            if self.is_hidden:
+                obj.image = None
+            # visible: some image
+            else:
+                tiles_dict = obj.spritesheet.tiles  # no flipping
+                if obj.flip["x"]:
+                    if obj.flip["y"]:
+                        tiles_dict = obj.spritesheet.tiles_flipped_xy
+                    else:
+                        tiles_dict = obj.spritesheet.tiles_flipped_x
+                elif obj.flip["y"]:
+                    tiles_dict = obj.spritesheet.tiles_flipped_y
+                obj.image = tiles_dict[anim_settings["frames"][int(self.frame)]]
 
     def play_animation(comp, game_object, name, priority=0):
-        # p = comp.get_p()
-        if name != comp.animation and priority >= comp.priority:
+        if name and name != comp.animation and priority >= comp.priority:
             comp.animation = name
             comp.has_changed = True
             comp.time = 0
@@ -1604,6 +1714,7 @@ class Dockable(Component):
     """
     a dockable component allows for 
     """
+
     def __init__(self, name):
         super().__init__(name)
         self.docked_sprites = {}  # dictionary that holds all Sprites (key=GameObject's id) currently docked to this one
@@ -1613,16 +1724,15 @@ class Dockable(Component):
 
     def added(self):
         # make sure our GameObject is a Sprite
-        assert isinstance(self.game_object, Sprite), "ERROR: game_object of Component Dockable must be of type Sprite (not {})!".\
+        assert isinstance(self.game_object, Sprite), "ERROR: game_object of Component Dockable must be of type Sprite (not {})!". \
             format(type(self.game_object).__name__)
         # extend our GameObject with move
         self.extend(self.move)
 
     def move(self, sprite, x: int, y: int, precheck: bool = False):
         """
-        moves the GameObject (which has to be a Sprite with a rect) by given x/y strides
+        moves our GameObject (which has to be a Sprite with a rect) by given x/y strides
         - if precheck is set to True: pre-checks the planned move via call to stage.locate and only moves entity as far as possible
-        - returns the actual movement        
         Args:
             sprite (Sprite): the Sprite to move (our GameObject)
             x (int): amount in which to move in x direction
@@ -1709,34 +1819,38 @@ class PhysicsComponent(Component, metaclass=ABCMeta):
     def tick(self, game_loop: GameLoop):
         pass
 
-    # needs to handle collisions
     @abstractmethod
     def collision(self, col: Collision):
+        """
+        this is the resolver for a Collision that happened between two Sprites under this PhysicsComponent
+
+        :param Collision col: the Collision object describing the collision that already happened between two sprites
+        """
         pass
 
     @staticmethod
-    def tile_layer_physics_collision_handler(col: Union[str, Collision]) -> Union[None, Collision, Tuple[Collision]]:
+    def tile_layer_physics_collision_handler(col: Collision) -> Union[None, Collision, Tuple[Collision]]:
         """
-        determines what a Layer should do once it detects a collision via its collide method
+        determines what a Layer should do once it detects a collision via its `collide` method
         Args:
             col (Collision): the collision object detected by the Layer
-                             alternatively, this could be a string of "get_collision_objects" to retrieve 2 default
-                             Collision objects for this handler (which is a Collision object)
-
         Returns: col (Collision)
         """
-        # get the used Collision objects and return -> no collision handling here!
-        # - this is called by the c'tor of TiledTileLayers that collide with Sprites using this component
-        if isinstance(col, str):
-            assert col == "get_collision_objects", "ERROR: col can only be 'get_collision_objects' if col is of type str!"
-            return (Collision(), Collision())
+        #OBSOLETE:
+        ##  get the used Collision objects and return -> no collision handling here!
+        ## - this is called by the c'tor of TiledTileLayers that collide with Sprites using this component
+        #if isinstance(col, str):
+        #    assert col == "get_collision_objects", "ERROR: col can only be 'get_collision_objects' if col is of type str!"
+        #    return (Collision(), Collision())
 
+        # by default, just set collided to True and return the collision as is
+        # - specific Physics behavior will have to be implemented by the different physics Components
         col.is_collided = True
 
         return col
 
 
-class StepPhysics(PhysicsComponent):
+class TopDownPhysics(PhysicsComponent):
     """
     defines "top-down-2D"-step physics (agent can move in any of the 4 directions using any step-size (smooth walking))
     - to be addable to any character (player or enemy)
@@ -1744,11 +1858,9 @@ class StepPhysics(PhysicsComponent):
 
     def __init__(self, name: str):
         super().__init__(name)
-        # velocities
+        # velocities/physics stuff
         self.vx = 0
         self.vy = 0
-
-        # physics
         self.run_acceleration = 300  # running acceleration
         self.v_max = 150  # max run-speed
         self.stops_abruptly_on_direction_change = True  # Vikings stop abruptly when running in one direction, then the other direction is pressed
@@ -1760,6 +1872,7 @@ class StepPhysics(PhysicsComponent):
         self.y_max = 9000
 
         self.touching = 0  # bitmap with those bits set that the entity is currently touching (colliding with)
+        # TODO: what does at_exit mean in terms of an MDP/RL-setting?
         self.at_exit = False
 
         self.game_obj_cmp_brain = None  # the GameObject's Brain component (used by Physics for steering and action control)
@@ -1772,8 +1885,8 @@ class StepPhysics(PhysicsComponent):
         obj.on_event("pre_tick", self, "tick")  # run this component's tick function after GameObject's one (so we can react to the GameObject's move)
         obj.on_event("collision", self, "collision")  # handle collisions
 
-        self.game_obj_cmp_brain = self.game_object.components.get("brain")
-        assert isinstance(self.game_obj_cmp_brain, Brain), "ERROR: GameObject's `brain` Component is not of type Brain!"
+        self.game_obj_cmp_brain = self.game_object.components.get("brain", None)
+        assert not self.game_obj_cmp_brain or isinstance(self.game_obj_cmp_brain, Brain), "ERROR: GameObject's `brain` Component is not of type Brain!"
 
     # determines x/y-speeds and moves the GameObject
     def tick(self, game_loop: GameLoop):
@@ -1794,7 +1907,7 @@ class StepPhysics(PhysicsComponent):
                 if not self.game_obj_cmp_brain.commands["right"]:
                     if self.stops_abruptly_on_direction_change and self.vx > 0:
                         self.vx = 0  # stop first if still walking in other direction
-                    ax = -(self.run_acceleration or 999000000000)  # accelerate left
+                    ax = -self.run_acceleration  # accelerate left
                     obj.flip['x'] = True  # mirror sprite
                 # user presses both keys (left and right) -> just stop
                 else:
@@ -1803,7 +1916,7 @@ class StepPhysics(PhysicsComponent):
             elif self.game_obj_cmp_brain.commands["right"]:
                 if self.stops_abruptly_on_direction_change and self.vx < 0:
                     self.vx = 0  # stop first if still walking in other direction
-                ax = self.run_acceleration or 999000000000  # accelerate right
+                ax = self.run_acceleration  # accelerate right
                 obj.flip['x'] = False
             # stop immediately (vx=0; don't accelerate negatively)
             else:
@@ -1817,17 +1930,15 @@ class StepPhysics(PhysicsComponent):
                 if not self.game_obj_cmp_brain.commands["down"]:
                     if self.stops_abruptly_on_direction_change and self.vy > 0:
                         self.vy = 0  # stop first if still walking in other direction
-                    ay = -(self.run_acceleration or 999000000000)  # accelerate left
-                    obj.flip['y'] = True  # mirror sprite
-                # user presses both keys (left and right) -> just stop
+                    ay = -self.run_acceleration  # accelerate up
+                # user presses both keys (up and down) -> just stop
                 else:
                     self.vy = 0
             # only down is pressed
             elif self.game_obj_cmp_brain.commands["down"]:
                 if self.stops_abruptly_on_direction_change and self.vy < 0:
                     self.vy = 0  # stop first if still walking in other direction
-                ay = self.run_acceleration or 999000000000  # accelerate right
-                obj.flip['y'] = False
+                ay = self.run_acceleration  # accelerate down
             # stop immediately (vy=0; don't accelerate negatively)
             else:
                 self.vy = 0
@@ -1840,7 +1951,7 @@ class StepPhysics(PhysicsComponent):
         # TODO: check the entity's magnitude of vx and vy,
         # reduce the max dt_step if necessary to prevent skipping through objects.
         while dt_step > 0:
-            dt = min(1/30, dt_step)
+            dt = min(1 / 30, dt_step)
 
             # update x/y-velocity based on acceleration
             self.vx += ax * dt
@@ -1850,145 +1961,72 @@ class StepPhysics(PhysicsComponent):
             if abs(self.vy) > self.v_max:
                 self.vy = -self.v_max if self.vy < 0 else self.v_max
 
+            # reset all touch flags before doing all the collision analysis
+            self.at_exit = False
+
             # first move in x-direction and solve x-collisions
             obj.move(self.vx * dt, 0.0)
             if DEBUG_FLAGS & DEBUG_RENDER_SPRITES_BEFORE_COLLISION_DETECTION:
                 obj.render(game_loop.display)
                 game_loop.display.debug_refresh()
 
-            # reset all touch flags before doing all the collision analysis
-            self.at_exit = False
+            # then do the normal collision layer(s)
+            for layer in stage.tiled_layers_to_collide:
+                if layer.type & Sprite.get_type("default"):
+                    layer.collide(obj, 'x', self.vx)
+
+            # then move in y-direction and solve y-collisions
+            obj.move(0.0, self.vy * dt)
+            if DEBUG_FLAGS & DEBUG_RENDER_SPRITES_BEFORE_COLLISION_DETECTION:
+                obj.render(game_loop.display)
+                game_loop.display.debug_refresh()
 
             # then do the normal collision layer(s)
             for layer in stage.tiled_layers_to_collide:
                 if layer.type & Sprite.get_type("default"):
-                    layer.collide(obj, self.vx, 0.0)
+                    layer.collide(obj, 'y', self.vy)
 
             dt_step -= dt
 
-        return
-
-    def collision(self, col: PlatformerCollision):
+    def collision(self, col: Collision):
         obj = self.game_object
         assert obj is col.sprite1, "ERROR: game_object ({}) of physics component is not identical with passed in col.sprite1 ({})!".format(obj, col.sprite1)
-        dockable = obj.components["dockable"]
 
         assert hasattr(col, "sprite2"), "ERROR: no sprite2 in col-object!"
         other_obj = col.sprite2
-        other_obj_physics = other_obj.components.get("physics", None)
 
         # collided with a tile (from a layer)
         if isinstance(other_obj, TileSprite):
             tile_props = other_obj.tile_props
-            # quicksand or water
-            if tile_props.get("liquid"):
-                obj.trigger_event("hit.liquid_ground", tile_props["liquid"])
-                return
             # colliding with an exit
-            elif tile_props.get("exit"):
+            # TODO: what does exit mean? in a RL setting? end of episode?
+            if tile_props.get("exit"):
                 self.at_exit = True
                 obj.stage.options["screen_obj"].trigger_event("reached_exit", obj)  # let the level know
                 return
-            # check for slopes
-            elif tile_props.get("slope", 0) != 0 and dockable.on_ground[1]:
-                abs_slope = abs(tile_props["slope"])
-                offset = tile_props["offset"]
-                # set p.y according to position of sprite within slope square
-                y_tile = (other_obj.tile_y+1) * other_obj.tile_h  # bottom y-pos of tile
-                # subtract from bottom-y for different inclines and different stages within the incline
-                dy_wanted = (y_tile - (other_obj.tile_h*(offset-1)/abs_slope) - obj.rect.centery - (col.x_in / abs_slope)) - obj.rect.y
-                # p.y = y_tile - (col.obj.p.tileH*(offset-1)/abs_slope) - p.cy - (col.xin / abs_slope);
-                # can we move there?
-                #var dy_actual =
-                obj.move(0, dy_wanted, True)  # TODO: check top whether we can move there (there could be a block)!!)) {
-                #if (dy_actual < dy_wanted) {
-                #	// if not -> move back in x-direction
-                #	//TODO: calc xmoveback value
-                #}
-                self.vy = 0.0
-                dockable.dock_to(other_obj)  # dock to collision layer
-                self.on_slope = col.sl
-
-                return
-
-        # normal collision
-        col.impact = 0.0
-
-        impact_x = abs(self.vx)
-        impact_y = abs(self.vy)
 
         # move away from the collision (back to where we were before)
-        x_orig = obj.rect.x
-        y_orig = obj.rect.y
         obj.rect.x -= col.separate[0]
         obj.rect.y -= col.separate[1]
 
         # bottom collision
         if col.normal_y < -0.3:
-            # a heavy object hit the ground -> rock the stage
-            # - on_ground[1]=check old value, the new one was reset to 0 before calling 'collide'
-            if self.is_heavy and not dockable.on_ground[1] and other_obj.type & Sprite.get_type("default"):
-                obj.stage.shake()
-
-            other_obj_dockable = other_obj.components.get("dockable", None)
-
-            # squeezing something
-            if self.vy > 0 and isinstance(other_obj_physics, PlatformerPhysics) and self.is_heavy and other_obj_physics.squeeze_speed > 0 and\
-                    other_obj_dockable and other_obj_dockable.on_ground[0]:
-
-                # adjust the collision separation to the new squeezeSpeed
-                if self.vy > other_obj_physics.squeeze_speed:
-                    obj.rect.y = y_orig + col.separate[1]*(other_obj_physics.squeeze_speed / self.vy)
-                # otherwise, just undo the separation
-                else:
-                    obj.rect.y += col.separate[1]
-
-                self.vy = other_obj_physics.squeeze_speed
-                other_obj.trigger_event("squeezed.top", obj)
-
-            # normal bottom collision
-            else:
-                if self.vy > 0:
-                    self.vy = 0
-                col.impact = impact_y
-                dockable.dock_to(other_obj)  # dock to bottom object (collision layer or MovableRock, etc..)
-                obj.trigger_event("bump.bottom", col)
+            if self.vy > 0:
+                self.vy = 0
+            obj.trigger_event("bump.bottom", col)
 
         # top collision
         if col.normal_y > 0.3:
             if self.vy < 0:
                 self.vy = 0
-            col.impact = impact_y
             obj.trigger_event("bump.top", col)
 
         # left/right collisions
         if abs(col.normal_x) > 0.3:
-            col.impact = impact_x
-            # we hit a fixed wall (non-pushable)
-            if self.vx * col.normal_x < 0:  # if normalX < 0 -> p.vx is > 0 -> set to 0; if normalX > 0 -> p.vx is < 0 -> set to 0
+            # we hit a fixed wall
+            if self.vx * col.normal_x < 0:  # if normalX < 0 -> vx is > 0 -> set to 0; if normalX > 0 -> vx is < 0 -> set to 0
                 self.vx = 0
-                obj.trigger_event("bump."+("right" if col.normal_x < 0 else "left"), col)
-
-    @staticmethod
-    def tile_layer_physics_collision_handler(col: Union[str, Collision]) -> Union[None, Collision, Tuple[Collision]]:
-        """
-        determines what a Layer should do once it detects a collision via its collide method
-        Args:
-            col (Collision): the collision object detected by the Layer
-                             alternatively, this could be a string of "get_collision_objects" to retrieve 2 default
-                             Collision objects for this handler (which is a Collision object)
-
-        Returns: col (Collision)
-        """
-        # get the used Collision objects and return -> no collision handling here!
-        # - this is called by the c'tor of TiledTileLayers that collide with Sprites using this component
-        if isinstance(col, str):
-            assert col == "get_collision_objects", "ERROR: col can only be 'get_collision_objects' if col is of type str!"
-            return (Collision(), Collision())
-
-        col.is_collided = True
-
-        return col
+                obj.trigger_event("bump." + ("right" if col.normal_x < 0 else "left"), col)
 
 
 class PlatformerPhysics(PhysicsComponent):
@@ -2017,7 +2055,7 @@ class PlatformerPhysics(PhysicsComponent):
         self.is_pushable = False  # set to True if a collision with the entity causes the entity to move a little
         self.is_heavy = False  # set to true if this object should squeeze other objects that are below it and cannot move away
         self.squeeze_speed = 0  # set to a value > 0 to define the squeezeSpeed at which this object gets squeezed by heavy objects
-                                # (objects with is_heavy == True)
+        # (objects with is_heavy == True)
 
         # environment stuff (TODO: where to get Level dimensions from?)
         self.x_min = 0  # the minimum/maximum allowed positions
@@ -2025,7 +2063,7 @@ class PlatformerPhysics(PhysicsComponent):
         self.x_max = 9000
         self.y_max = 9000
 
-        self.touching = 0  # bitmap with those bits set that the entity is currently touching (colliding with)
+        # self.touching = 0  # bitmap with those bits set that the entity is currently touching (colliding with)
         self.at_exit = False
         self.at_wall = False
         self.on_slope = 0  # 1 if on up-slope, -1 if on down-slope
@@ -2116,24 +2154,24 @@ class PlatformerPhysics(PhysicsComponent):
                 # obj is currently on ladder
                 if self.on_ladder > 0:
                     # reached the top of the ladder -> lock out of ladder
-                    if obj.rect.y <= self.which_ladder.ytop - obj.rect.height/2:
+                    if obj.rect.y <= self.which_ladder.ytop - obj.rect.height / 2:
                         self.unlock_ladder()
                     else:
                         self.vy = -self.climb_speed
                 # player locks into ladder
-                elif (self.which_ladder and obj.rect.y <= self.which_ladder.rect.top - obj.rect.height/2 and
-                    obj.rect.y > self.which_ladder.rect.bottom - obj.rect.height/2):
+                elif (self.which_ladder and obj.rect.y <= self.which_ladder.rect.top - obj.rect.height / 2 and
+                              obj.rect.y > self.which_ladder.rect.bottom - obj.rect.height / 2):
                     self.lock_ladder()
             # user is pressing only 'down' (ladder?)
             elif self.game_obj_cmp_brain.commands["down"]:
                 if self.on_ladder > 0:
                     # we reached the bottom of the ladder -> lock out of ladder
-                    if obj.rect.y >= self.which_ladder.rect.bottom - obj.rect.height/2:
+                    if obj.rect.y >= self.which_ladder.rect.bottom - obj.rect.height / 2:
                         self.unlock_ladder()
                     # move down
                     else:
                         self.vy = self.climb_speed
-                elif self.which_ladder and obj.rect.y < self.which_ladder.rect.bottom - obj.rect.height/2 and dockable.on_ground[0]:
+                elif self.which_ladder and obj.rect.y < self.which_ladder.rect.bottom - obj.rect.height / 2 and dockable.on_ground[0]:
                     self.lock_ladder()
             # jumping?
             elif self.can_jump:
@@ -2153,7 +2191,7 @@ class PlatformerPhysics(PhysicsComponent):
         # TODO: check the entity's magnitude of vx and vy,
         # reduce the max dt_step if necessary to prevent skipping through objects.
         while dt_step > 0:
-            dt = min(1/30, dt_step)
+            dt = min(1 / 30, dt_step)
 
             # update x/y-velocity based on acceleration
             self.vx += ax * dt  # TODO: x-gravity? + self.(p.gravityX == void 0 ? Q.gravityX : p.gravityX) * dt * p.gravity;
@@ -2193,14 +2231,12 @@ class PlatformerPhysics(PhysicsComponent):
                     layer.collide(obj, self.vx, 0.0)
 
             ## check for touch collisions first (e.g. ladders)
-            #for layer in stage.tiled_layers_to_collide:
+            # for layer in stage.tiled_layers_to_collide:
             #    if layer.type & Sprite.get_type("touch"):
             #        layer.collide(obj)
             # TODO: solve collisions with other objects
 
             dt_step -= dt
-
-        return
 
     def collision(self, col: PlatformerCollision):
         obj = self.game_object
@@ -2216,7 +2252,8 @@ class PlatformerPhysics(PhysicsComponent):
             # shooter (this) is colliding with own shot -> ignore
             if obj is not other_obj.shooter:
                 obj.trigger_event("hit.particle", col)
-                other_obj.trigger_event("hit", obj)  # for particles, force the reciprocal collisions (otherwise, the character that got shot could be gone (dead) before any collisions on the particle could get triggered (-> e.g. arrow will fly through a dying enemy without ever actually touching the enemy))
+                other_obj.trigger_event("hit",
+                                        obj)  # for particles, force the reciprocal collisions (otherwise, the character that got shot could be gone (dead) before any collisions on the particle could get triggered (-> e.g. arrow will fly through a dying enemy without ever actually touching the enemy))
             return
 
         # colliding with a ladder
@@ -2246,17 +2283,17 @@ class PlatformerPhysics(PhysicsComponent):
                 abs_slope = abs(tile_props["slope"])
                 offset = tile_props["offset"]
                 # set p.y according to position of sprite within slope square
-                y_tile = (other_obj.tile_y+1) * other_obj.tile_h  # bottom y-pos of tile
+                y_tile = (other_obj.tile_y + 1) * other_obj.tile_h  # bottom y-pos of tile
                 # subtract from bottom-y for different inclines and different stages within the incline
-                dy_wanted = (y_tile - (other_obj.tile_h*(offset-1)/abs_slope) - obj.rect.centery - (col.x_in / abs_slope)) - obj.rect.y
+                dy_wanted = (y_tile - (other_obj.tile_h * (offset - 1) / abs_slope) - obj.rect.centery - (col.x_in / abs_slope)) - obj.rect.y
                 # p.y = y_tile - (col.obj.p.tileH*(offset-1)/abs_slope) - p.cy - (col.xin / abs_slope);
                 # can we move there?
-                #var dy_actual =
+                # var dy_actual =
                 obj.move(0, dy_wanted, True)  # TODO: check top whether we can move there (there could be a block)!!)) {
-                #if (dy_actual < dy_wanted) {
+                # if (dy_actual < dy_wanted) {
                 #	// if not -> move back in x-direction
                 #	//TODO: calc xmoveback value
-                #}
+                # }
                 self.vy = 0.0
                 dockable.dock_to(other_obj)  # dock to collision layer
                 self.on_slope = col.sl
@@ -2285,12 +2322,12 @@ class PlatformerPhysics(PhysicsComponent):
             other_obj_dockable = other_obj.components.get("dockable", None)
 
             # squeezing something
-            if self.vy > 0 and isinstance(other_obj_physics, PlatformerPhysics) and self.is_heavy and other_obj_physics.squeeze_speed > 0 and\
+            if self.vy > 0 and isinstance(other_obj_physics, PlatformerPhysics) and self.is_heavy and other_obj_physics.squeeze_speed > 0 and \
                     other_obj_dockable and other_obj_dockable.on_ground[0]:
 
                 # adjust the collision separation to the new squeezeSpeed
                 if self.vy > other_obj_physics.squeeze_speed:
-                    obj.rect.y = y_orig + col.separate[1]*(other_obj_physics.squeeze_speed / self.vy)
+                    obj.rect.y = y_orig + col.separate[1] * (other_obj_physics.squeeze_speed / self.vy)
                 # otherwise, just undo the separation
                 else:
                     obj.rect.y += col.separate[1]
@@ -2319,7 +2356,7 @@ class PlatformerPhysics(PhysicsComponent):
             bump_wall = False
             # we hit a pushable object -> check if it can move
             if (other_obj_physics and hasattr(other_obj_physics, "is_pushable") and other_obj_physics.is_pushable and
-                    dockable.on_ground[1]): # 1=check old value, new one has been set to 0 before calling 'collide'
+                    dockable.on_ground[1]):  # 1=check old value, new one has been set to 0 before calling 'collide'
                 self.push_an_object(obj, col)
                 bump_wall = True
             # we hit a fixed wall (non-pushable)
@@ -2330,7 +2367,7 @@ class PlatformerPhysics(PhysicsComponent):
             if bump_wall:
                 if other_obj.type & Sprite.get_type("default"):
                     self.at_wall = True
-                obj.trigger_event("bump."+("right" if col.normal_x < 0 else "left"), col)
+                obj.trigger_event("bump." + ("right" if col.normal_x < 0 else "left"), col)
 
     def push_an_object(self, pusher, col):
         pushee = col.sprite2  # correct? or does it need to be sprite1?
@@ -2338,13 +2375,13 @@ class PlatformerPhysics(PhysicsComponent):
         # for now: don't push, then
         if col.impact > 0:
             move_x = col.separate[0] * abs(pushee.vx_max / col.impact)
-            #console.log("pushing Object: move_x="+move_x);
+            # console.log("pushing Object: move_x="+move_x);
             # do a locate on the other side of the - already moved - pushable object
-            #var testcol = pusher.stage.locate(pushee_p.x+move_x+(pushee_p.cx+1)*(p.flip ==   'x' ? -1 : 1), pushee_p.y, (Q._SPRITE_DEFAULT | Q._SPRITE_FRIENDLY | Q._SPRITE_ENEMY));
-            #if (testcol && (! (testcol.tileprops && testcol.tileprops.slope))) {
+            # var testcol = pusher.stage.locate(pushee_p.x+move_x+(pushee_p.cx+1)*(p.flip ==   'x' ? -1 : 1), pushee_p.y, (Q._SPRITE_DEFAULT | Q._SPRITE_FRIENDLY | Q._SPRITE_ENEMY));
+            # if (testcol && (! (testcol.tileprops && testcol.tileprops.slope))) {
             #	p.vx = 0; // don't move player, don't move pushable object
-            #}
-            #else {
+            # }
+            # else {
             # move obj (plus all its docked objects) and move pusher along
             pusher.move(move_x, 0)
             pushee.move(move_x, 0)
@@ -2352,7 +2389,6 @@ class PlatformerPhysics(PhysicsComponent):
         else:
             self.vx = 0
 
-    # TODO: move entire tiled layer collision handling into physics component
     @staticmethod
     def tile_layer_physics_collision_handler(col: Union[str, PlatformerCollision]) -> Union[None, PlatformerCollision, Tuple[PlatformerCollision]]:
         """
@@ -2364,11 +2400,12 @@ class PlatformerPhysics(PhysicsComponent):
 
         Returns: col (Collision)
         """
-        # get the used Collision objects and return -> no collision handling here!
-        # - this is called by the c'tor of TiledTileLayers that collide with Sprites using this component
-        if isinstance(col, str):
-            assert col == "get_collision_objects", "ERROR: col can only be 'get_collision_objects' if col is of type str!"
-            return (PlatformerCollision(), PlatformerCollision())
+        #OBSOLETE:
+        ##  get the used Collision objects and return -> no collision handling here!
+        ## - this is called by the c'tor of TiledTileLayers that collide with Sprites using this component
+        #if isinstance(col, str):
+        #    assert col == "get_collision_objects", "ERROR: col can only be 'get_collision_objects' if col is of type str!"
+        #    return (PlatformerCollision(), PlatformerCollision())
 
         # check for slopes
         col.slope = False
@@ -2410,6 +2447,7 @@ class Viewport(Component):
     - any GameObject with offset_x/y fields is supported, the Viewport will set these offsets to the Viewports x/y values
       before each render call
     """
+
     def __init__(self, display: Display):
         super().__init__("viewport")  # fix name to 'viewport' (only one viewport per Stage)
 
@@ -2479,6 +2517,7 @@ class Viewport(Component):
 
     def move_to_with_viewport(self, game_object, x, y):
         return self.move_to(x, y)
+
     # END: EXTENSION METHODS
 
     """shake: function() {
@@ -2499,15 +2538,16 @@ class Viewport(Component):
         follow_y = self.directions["y"](self.obj_to_follow) if callable(self.directions["y"]) else  self.directions["y"]
 
         func = self.center_on if first else self.soft_center_on
-        func(self.obj_to_follow.rect.x + self.obj_to_follow.rect.width / 2 - self.offset_x if follow_x else None, self.obj_to_follow.rect.y + self.obj_to_follow.rect.height / 2 - self.offset_y if follow_y else None)
+        func(self.obj_to_follow.rect.x + self.obj_to_follow.rect.width / 2 - self.offset_x if follow_x else None,
+             self.obj_to_follow.rect.y + self.obj_to_follow.rect.height / 2 - self.offset_y if follow_y else None)
 
     def offset(self, x, y):
         self.offset_x = x
         self.offset_y = y
 
-    def soft_center_on(self, x: Union[int,None]=None, y: Union[int,None]=None):
+    def soft_center_on(self, x: Union[int, None] = None, y: Union[int, None] = None):
         if x:
-            dx = (x - self.display.surface.get_width() / 2 / self.scale - self.x) / 3  #//, this.followMaxSpeed);
+            dx = (x - self.display.surface.get_width() / 2 / self.scale - self.x) / 3  # //, this.followMaxSpeed);
             if abs(dx) > self.max_speed:
                 dx = math.copysign(self.max_speed, dx)
 
@@ -2561,7 +2601,7 @@ class Screen(EventObject, metaclass=ABCMeta):
     - the done method can do some cleanup
     """
 
-    def __init__(self, name: str="start", **kwargs):
+    def __init__(self, name: str = "start", **kwargs):
         super().__init__()
         self.name = name
         self.id = kwargs.get("id", 0)
@@ -2587,16 +2627,15 @@ class Level(Screen, metaclass=ABCMeta):
     - adds tmx file support to the Screen
     - we can get lots of information from the tmx file to build the level in the play method
     """
-    def __init__(self, name: str="test", **kwargs):
+
+    def __init__(self, name: str = "test", **kwargs):
         super().__init__(name, **kwargs)
 
-        self.tmx_file = kwargs.get("tmx_file", "data/"+name.lower()+".tmx")
+        self.tmx_file = kwargs.get("tmx_file", "data/" + name.lower() + ".tmx")
         # load in the world's tmx file
         self.tmx_obj = pytmx.load_pygame(self.tmx_file)
         self.width = self.tmx_obj.width * self.tmx_obj.tilewidth
         self.height = self.tmx_obj.height * self.tmx_obj.tileheight
-        # child classes need to set this so any tilelayer knows, how to handle collisions with GameObjects
-        self.tile_layer_physics_collision_handler = kwargs.get("tile_layer_physics_collision_handler", None)
 
         self.register_event("mastered", "aborted", "lost")
 
@@ -2609,7 +2648,8 @@ class GameManager(object):
     - manages displaying the level and other screens (start screen, etc..)
     - also keeps the Display object
     """
-    def __init__(self, screens_and_levels, width: int=0, height: int=0, title: str="spygame Demo!", max_fps: int=60, debug_flags=DEBUG_NONE):
+
+    def __init__(self, screens_and_levels, width: int = 0, height: int = 0, title: str = "spygame Demo!", max_fps: int = 60, debug_flags=DEBUG_NONE):
         assert not GameManager.instantiated, "ERROR: can only create one {} object!".format(type(self).__name__)
         GameManager.instantiated = True
 
@@ -2697,17 +2737,20 @@ class GameManager(object):
         self.level_aborted(level)  # for now: same as aborted level
 
 
-class SATCollision(object):
-
+class CollisionAlgorithm(object):
+    """
+    a static class that is used to store a collision algorithm
+    """
     # the default collision objects
     # - can be overridden via the collide method
     default_collision_objects = (Collision(), Collision())
 
     # the normal given a certain axis (we have to go through all axes (all sides) of both Sprites)
     # - keep global for performance reasons :(
-    normal = [0.0, 0.0]
+    #normal = [0.0, 0.0]
 
     @staticmethod
+    @abstractmethod
     def collide(sprite1, sprite2, collision_objects=None):
         """
         solves a simple spatial collision problem for two Sprites (that have a rect property)
@@ -2715,14 +2758,109 @@ class SATCollision(object):
         - thanks to doc's at: http://www.sevenson.com.au/actionscript/sat/
         - TODO: handle angles on objects
         - TODO: handle velocities of sprites prior to collision to calculate correct normals
-        Args:
-            sprite1 (Sprite): sprite 1
-            sprite2 (Sprite): sprite 2 (the other sprite)
-            collision_objects (tuple): the two always-recycled returnable Collision instances (aside from None); if None, use our default ones
-    
-        Returns: Collision object
-    
+
+        :param Sprite sprite1: sprite 1
+        :param Sprite sprite2: sprite 2 (the other sprite)
+        :param Union[None, Tuple[Collision]] collision_objects: the two always-recycled returnable Collision instances (aside from None); if None,
+        use our default ones
+        :return: a Collision object with all details of the collision between the two Sprites (None if there is no collision)
+        :rtype: Union[None, Collision]
         """
+        pass
+
+
+class AABBCollision(CollisionAlgorithm):
+    """
+    a simple axis-aligned bounding-box collision mechanism which only works on Pygame rects
+    """
+    @staticmethod
+    def collide(sprite1, sprite2, collision_objects=None, direction='x', direction_veloc=1.0):
+        # TODO: actually, we only need one collision object as we should always only resolve one object at a time
+
+        # TODO: utilize direction veloc information to only return the smallest separation collision
+
+        # use default CollisionObjects?
+        if not collision_objects:
+            collision_objects = AABBCollision.default_collision_objects
+
+        ret = AABBCollision.try_collide(sprite1, sprite2, collision_objects[0], direction, direction_veloc)
+        if not ret:
+            return None
+
+        if ret.magnitude == 0.0:
+            return None
+        ret.separate[0] = ret.distance * ret.normal_x
+        ret.separate[1] = ret.distance * ret.normal_y
+
+        return ret
+
+    @staticmethod
+    def try_collide(o1, o2, collision_obj, direction, direction_veloc):
+        """
+        does the actual AABB collision test
+        :param Sprite o1: object 1
+        :param Sprite o2: object 2
+        :param Collision collision_obj: the collision object to be populated
+        :param str direction: the direction in which we have to measure a collision (x or y)
+        :param float direction_veloc: the velocity value in the given x- or y-direction
+        :return: the populated Collision object
+        :rtype: Collision
+        """
+        assert direction == 'x' or direction == 'y', "ERROR: parameter direction needs to be either 'x' or 'y'!"
+
+        # reset the recycled collision object
+        collision_obj.is_collided = False
+        collision_obj.normal_x = 0.0
+        collision_obj.normal_y = 0.0
+        collision_obj.magnitude = 0.0
+
+        # overlap?
+        if o1.rect.right > o2.rect.left and o1.rect.left < o2.rect.right and o1.rect.bottom > o2.rect.top and o1.rect.top < o2.rect.bottom:
+            collision_obj.sprite1 = o1
+            collision_obj.sprite2 = o2
+            collision_obj.is_collided = True
+            if direction == 'x':
+                if direction_veloc > 0:
+                    collision_obj.distance = -(o1.rect.right - o2.rect.left)
+                    collision_obj.normal_x = -1.0
+                elif direction_veloc < 0:
+                    collision_obj.distance = -(o2.rect.right - o1.rect.left)
+                    collision_obj.normal_x = 1.0
+            else:
+                if direction_veloc > 0:
+                    collision_obj.distance = -(o1.rect.bottom - o2.rect.top)
+                    collision_obj.normal_y = -1.0
+                elif direction_veloc < 0:
+                    collision_obj.distance = -(o2.rect.bottom - o1.rect.top)
+                    collision_obj.normal_y = 1.0
+
+            #if flip:
+            #    collision_obj.distance *= -1
+            #    collision_obj.normal_x *= -1
+            collision_obj.magnitude = abs(collision_obj.distance)
+
+            ## take the smaller direction (x/y)
+            #dist = -(o1.rect.bottom - o2.rect.top)
+            #y_magnitude = abs(dist)
+            #if y_magnitude < collision_obj.magnitude:
+            #    collision_obj.magnitude = y_magnitude
+            #    collision_obj.distance = dist
+            #    collision_obj.normal_x = 0.0
+            #    collision_obj.normal_y = -1.0
+            #    if flip:
+            #        collision_obj.distance *= -1
+            #        collision_obj.normal_y *= -1
+
+        #collision_obj.separate = [collision_obj.distance * collision_obj.normal_x, collision_obj.distance * collision_obj.normal_y]
+
+        return collision_obj if collision_obj.is_collided else None
+
+
+class SATCollision(CollisionAlgorithm):
+    normal = [0.0, 0.0]
+
+    @staticmethod
+    def collide(sprite1, sprite2, collision_objects=None):
         # use default CollisionObjects?
         if not collision_objects:
             collision_objects = SATCollision.default_collision_objects
@@ -2730,7 +2868,7 @@ class SATCollision(object):
         # do AABB first for a likely early out
         # TODO: right now, we only have pygame.Rect anyway, so these are AABBs
         if (sprite1.rect.right < sprite2.rect.left or sprite1.rect.bottom < sprite2.rect.top or
-            sprite2.rect.right < sprite1.rect.left or sprite2.rect.right < sprite1.rect.left):
+                    sprite2.rect.right < sprite1.rect.left or sprite2.rect.right < sprite1.rect.left):
             return None
 
         test = SATCollision.try_collide(sprite1, sprite2, collision_objects[0], False)
@@ -2753,7 +2891,7 @@ class SATCollision(object):
     @staticmethod
     def calculate_normal(points, idx):
         pt1 = points[idx]
-        pt2 = points[idx+1] if idx < len(points)-1 else points[0]
+        pt2 = points[idx + 1] if idx < len(points) - 1 else points[0]
 
         SATCollision.normal[0] = -(pt2[1] - pt1[1])
         SATCollision.normal[1] = pt2[0] - pt1[0]
@@ -2770,14 +2908,14 @@ class SATCollision(object):
     @staticmethod
     def try_collide(o1, o2, collision_obj, flip):
         shortest_dist = float("inf")
-        collided = False
+        collision_obj.is_collided = False
 
-        # if we have a position matrix, just use those points
-        p1 = [[o1.rect.x, o1.rect.y], [o1.rect.x+o1.rect.width, o1.rect.y],
-              [o1.rect.x+o1.rect.width, o1.rect.y+o1.rect.height], [o1.rect.x, o1.rect.y+o1.rect.height]]
+        # the following only works for AABBs, we will have to change that once objects start rotating or being non-rects
+        p1 = [[o1.rect.x, o1.rect.y], [o1.rect.x + o1.rect.width, o1.rect.y],
+              [o1.rect.x + o1.rect.width, o1.rect.y + o1.rect.height], [o1.rect.x, o1.rect.y + o1.rect.height]]
 
-        p2 = [[o2.rect.x, o2.rect.y], [o2.rect.x+o2.rect.width, o2.rect.y],
-              [o2.rect.x+o2.rect.width, o2.rect.y+o2.rect.height], [o2.rect.x, o2.rect.y+o2.rect.height]]
+        p2 = [[o2.rect.x, o2.rect.y], [o2.rect.x + o2.rect.width, o2.rect.y],
+              [o2.rect.x + o2.rect.width, o2.rect.y + o2.rect.height], [o2.rect.x, o2.rect.y + o2.rect.height]]
 
         # loop through all axes of sprite1
         for i in range(len(p1)):
@@ -2825,12 +2963,11 @@ class SATCollision(object):
                     collision_obj.normal_x *= -1
                     collision_obj.normal_y *= -1
 
-                collided = True
                 collision_obj.is_collided = True
                 shortest_dist = min_dist_abs
 
         # return the actual collision
-        return collision_obj if collided else None
+        return collision_obj if collision_obj.is_collided else None
 
 
 def defaults(dictionary, defaults_dict):

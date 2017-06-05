@@ -10,11 +10,13 @@
  -------------------------------------------------------------------------
 """
 
-import aiopener.spygame.spygame as spyg
-import pygame
-import pygame.font
 import random
 from abc import ABCMeta, abstractmethod
+
+import pygame
+import pygame.font
+
+import spygame as spyg
 
 
 class Viking(spyg.AnimatedSprite, metaclass=ABCMeta):
@@ -239,12 +241,8 @@ class Viking(spyg.AnimatedSprite, metaclass=ABCMeta):
 # define player: Baleog
 class Baleog(Viking):
     def __init__(self, x: int, y: int, spritesheet: spyg.SpriteSheet):
-        super().__init__(x, y, spritesheet)
-
-        self.components["physics"].can_jump = False
-        self.disabled_sword = False
-
-        spyg.Animation.register_settings(spritesheet.name, {
+        super().__init__(x, y, spritesheet, {
+            "default"          : "stand",  # the default animation to play
             "stand"            : {"frames": [0], "loop": False, "flags": spyg.Animation.ANIM_PROHIBITS_STAND},
             "be_bored1"        : {"frames": [1, 2, 2, 1, 1, 3, 4, 3, 4, 5, 6, 5, 6, 7, 8, 7, 8, 3, 4, 3, 4], "rate": 1 / 3, "loop": False, "next": "stand",
                                   "flags" : spyg.Animation.ANIM_PROHIBITS_STAND},
@@ -279,7 +277,10 @@ class Baleog(Viking):
                                   "keys_status": {"action2": -1}},
             "release_bow"      : {"frames": [33, 32, 33, 32, 33, 32, 0], "rate": 1 / 6, "loop": False, "next": "stand",
                                   "flags" : (spyg.Animation.ANIM_PROHIBITS_STAND | spyg.Animation.ANIM_BOW)},
-        }, register_events_on=self)
+        })
+
+        self.components["physics"].can_jump = False
+        self.disabled_sword = False
 
     def check_actions(self):
         # sword or arrow?
@@ -323,19 +324,8 @@ class Baleog(Viking):
 # define player: Erik the Swift
 class Erik(Viking):
     def __init__(self, x: int, y: int, spritesheet: spyg.SpriteSheet):
-        super().__init__(x, y, spritesheet)
-
-        phys = self.components["physics"]
-        phys.run_acceleration = 450
-        phys.can_jump = True
-        phys.vx_max = 175
-        phys.stops_abruptly_on_direction_change = False
-
-        self.ran_fast = False  # flag: if True, play outOfBreath sequence
-        self.vx_out_of_breath = 120  # speed after which to play outOfBreath sequence
-        self.vx_smash_wall = 150  # minimum speed at which we can initiate smash sequence with 'D'
-
-        spyg.Animation.register_settings(spritesheet.name, {
+        super().__init__(x, y, spritesheet, {
+            "default"          : "stand",  # the default animation to play
             "stand"            : {"frames": [0], "loop": False, "flags": spyg.Animation.ANIM_PROHIBITS_STAND},
             "be_bored1"        : {"frames": [1], "rate": 1 / 2, "next": 'stand', "flags": spyg.Animation.ANIM_PROHIBITS_STAND},
             "be_bored2"        : {"frames": [61, 2, 3, 4, 3, 4, 3, 4], "rate": 1 / 3, "next": 'stand',
@@ -361,7 +351,17 @@ class Erik(Viking):
                                   "flags" : (spyg.Animation.ANIM_PROHIBITS_STAND | spyg.Animation.ANIM_DISABLES_CONTROL)},
             "burn"             : {"frames": [117, 118, 119, 120, 121, 122, 123, 124], "rate": 1 / 4, "loop": False, "trigger": 'die',
                                   "flags" : spyg.Animation.ANIM_DISABLES_CONTROL},
-        }, register_events_on=self)
+        })
+
+        phys = self.components["physics"]
+        phys.run_acceleration = 450
+        phys.can_jump = True
+        phys.vx_max = 175
+        phys.stops_abruptly_on_direction_change = False
+
+        self.ran_fast = False  # flag: if True, play outOfBreath sequence
+        self.vx_out_of_breath = 120  # speed after which to play outOfBreath sequence
+        self.vx_smash_wall = 150  # minimum speed at which we can initiate smash sequence with 'D'
 
     # Erik has no special actions
     def check_actions(self):
@@ -461,7 +461,7 @@ class VikingScreen(spyg.Screen):
 
 class VikingLevel(spyg.Level):
     def __init__(self, name: str="test", **kwargs):
-        super().__init__(name, tile_layer_physics_collision_handler=spyg.PlatformerPhysics.tile_layer_physics_collision_handler, **kwargs)
+        super().__init__(name, **kwargs)
 
         # hook to the Level's Viking objects (defined in the tmx file's TiledObjectGroup)
         self.vikings = []
@@ -478,14 +478,15 @@ class VikingLevel(spyg.Level):
 
     def play(self):
         # define Level's Scene (default function that populates Stage with stuff from tmx file)
-        scene = spyg.Scene.register_scene(self.name, options={"tmx_obj": self.tmx_obj,
-                                                              "tile_layer_physics_collision_handler": self.tile_layer_physics_collision_handler})
+        scene = spyg.Scene.register_scene(self.name, options={"tmx_obj": self.tmx_obj})
 
         # start level (stage the scene; will overwrite the old 0-stage (=main-stage))
         # - the options-object below will be also stored in [Stage object].options
         stage = spyg.Stage.stage_scene(scene, 0, {
                                         "screen_obj": self,
                                         "components": [spyg.Viewport(self.display)],
+                                        "tile_layer_collisions": (spyg.PlatformerCollision(), spyg.PlatformerCollision()),
+                                        "tile_layer_collision_detector": spyg.SATCollision.collide,
                                         "tile_layer_collision_handler": spyg.PlatformerPhysics.tile_layer_physics_collision_handler
         })
 
@@ -640,7 +641,7 @@ class Shot(spyg.AnimatedSprite):
     // A SHOT (like the one a scorpion shoots)
     // - can be extended to do more complicated stuff
     """
-    def __init__(self, offset_x: int, offset_y: int, spritesheet: spyg.SpriteSheet, shooter: spyg.GameObject):
+    def __init__(self, offset_x: int, offset_y: int, spritesheet: spyg.SpriteSheet, animation_setup: dict, shooter: spyg.GameObject):
         self.offset_x = offset_x
         self.offset_y = offset_y
         self.shooter = shooter
@@ -648,7 +649,7 @@ class Shot(spyg.AnimatedSprite):
         self.rect.x = self.shooter.rect.x + self.offset_x * (-1 if self.flip == 'x' else 1)
         self.rect.y = self.shooter.rect.y + self.offset_y
 
-        super().__init__(self.rect.x, self.rect.y, spritesheet)
+        super().__init__(self.rect.x, self.rect.y, spritesheet, animation_setup)
 
         # some simple physics
         self.ax = 0
@@ -666,7 +667,6 @@ class Shot(spyg.AnimatedSprite):
 
         self.on_event("hit", self, "collision")
         self.on_event("collision_done")
-        self.play_animation("fly")  # start playing fly-sequence
 
     # simple tick function with ax and ay, speed- and pos-recalc, and collision detection
     def tick(self, game_loop):
@@ -706,12 +706,10 @@ class Arrow(Shot):
     arrow class
     """
     def __init__(self, shooter: spyg.GameObject):
-        super().__init__(3, -3, spyg.SpriteSheet("data/arrow.tsx"), shooter)
-
-        # set up animations
-        spyg.Animation.register_settings(self.spritesheet.name, {
+        super().__init__(3, -3, spyg.SpriteSheet("data/arrow.tsx"), {
+            "default" : "fly",  # the default animation to play
             "fly": {"frames": [0, 1, 2, 3], "rate": 1/10},
-        }, register_events_on=self)
+        }, shooter)
 
         self.type = spyg.Sprite.get_type("particle") | spyg.Sprite.get_type("arrow")
         # simple physics, no extra component needed for that
@@ -728,13 +726,11 @@ class Fireball(Shot):
     fireball class
     """
     def __init__(self, shooter: spyg.GameObject):
-        super().__init__(0, 0, spyg.SpriteSheet("data/fireball.tsx"), shooter)
-
-        # set up animations
-        spyg.Animation.register_settings(self.spritesheet.name, {
+        super().__init__(0, 0, spyg.SpriteSheet("data/fireball.tsx"), {
+            "default": "fly",  # the default animation to play
             "fly": {"frames": [0, 1], "rate": 1/5},
             "hit": {"frames": [4, 5], "rate": 1/3, "loop": False, "trigger": "collision_done"}
-        }, register_events_on=self)
+        }, shooter)
 
         self.vx = 200
         self.type = spyg.Sprite.get_type("particle") | spyg.Sprite.get_type("fireball")
