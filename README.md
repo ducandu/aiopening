@@ -1,4 +1,4 @@
-![Logo](https://github.com/sven1977/aiopener/blob/master/logo.png)
+![image](https://github.com/sven1977/aiopener/blob/master/logo.png "Title" {width=50px height=50px})
 
 # aiopener
 an eye-opening library
