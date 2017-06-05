@@ -19,3 +19,20 @@ There will also be an MDP-solver-server (to solve the levels of different games)
 ```
 pip install aiopener
 ```
+
+`maze_runner.py`
+```
+import aiopener.spygame as spyg
+
+# create the GameManager
+game_manager = spyg.GameManager([
+    # level 1
+    {"class": MazeRunnerLevel,  # <- this class needs to be defined somewhere
+     "name" : "MAZE", # -> will read maze.tmx file and turn into Level object
+     "id": 1,  
+     },
+], title="The Maze Runner - An A-Maze-ing Game :D", max_fps=60)
+
+# that's it, play one of the levels -> this will enter an endless game loop
+game_manager.levels_by_name["MAZE"].play()
+```
