@@ -12,5 +12,5 @@
 
 from setuptools import setup
 
-setup(name='aiopener', version='1.0', description='AI (but even opener)', url='http://github.com/sven1977/aiopener', author='Sven Mika',
-      author_email='sven.mika@ducandu.com', license='MIT', packages=['aiopener'], zip_safe=False)
+setup(name='aiopening', version='1.0', description='AI (but even opener)', url='http://github.com/sven1977/aiopening', author='Sven Mika',
+      author_email='sven.mika@ducandu.com', license='MIT', packages=['aiopening'], zip_safe=False)

@@ -21,7 +21,6 @@ import types
 import pytmx
 import sys
 import math
-# import aiopener
 import re
 
 # some debug flags that we can set to switch on debug rendering, collision handling, etc..

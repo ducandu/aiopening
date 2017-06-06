@@ -11,7 +11,7 @@
 # from pyrate.auxiliary import *
 
 # import all modules in this directory
-import aiopener.aiopener as aiopener
+import aiopening.aiopening as aiopener
 
 # global pack vars
 _VERSION = 1  # 00.00.01 = 1

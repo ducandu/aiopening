@@ -1,5 +1,5 @@
 import unittest
-from aiopener import ReplayMemory
+from aiopening import ReplayMemory
 
 
 class TestReplayMemory(unittest.TestCase):

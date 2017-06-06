@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# aiopener documentation build configuration file, created by
+# aiopening documentation build configuration file, created by
 # sphinx-quickstart on Sun Jun  4 11:36:56 2017.
 #
 # This file is execfile()d with the current directory set to its
@@ -50,7 +50,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = 'aiopener'
+project = 'aiopening'
 copyright = '2017, Sven Mika'
 author = 'Sven Mika'
 
@@ -131,7 +131,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'aiopener.tex', 'aiopener Documentation',
+    (master_doc, 'aiopening.tex', 'aiopening Documentation',
      'Sven Mika', 'manual'),
 ]
 
@@ -141,7 +141,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'aiopener', 'aiopener Documentation',
+    (master_doc, 'aiopening', 'aiopening Documentation',
      [author], 1)
 ]
 
@@ -152,8 +152,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'aiopener', 'aiopener Documentation',
-     author, 'aiopener', 'One line description of project.',
+    (master_doc, 'aiopening', 'aiopening Documentation',
+     author, 'aiopening', 'One line description of project.',
      'Miscellaneous'),
 ]
 

@@ -24,7 +24,7 @@ import json
 ai new "new project"
 
 """
-parser = argparse.ArgumentParser(description='aiopener command line client (for submitting MDP-solver jobs to the aiopener server)')
+parser = argparse.ArgumentParser(description='aiopening command line client (for submitting MDP-solver jobs to the aiopening server)')
 parser.add_argument("cmd", choices=["new"], help="the command to be executed on the server")
 parser.add_argument("options", metavar="opt", nargs="+", help="the options for the chosen command")
 

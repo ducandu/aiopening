@@ -23,7 +23,7 @@ import logging as log
 from autobahn.twisted.websocket import WebSocketServerProtocol, WebSocketServerFactory
 import json  # our format for messaging
 import server_config as conf  # PyRATE TCP server config
-import aiopener
+import aiopening
 import sys
 
 
@@ -194,7 +194,7 @@ class Project(object):  # persistent.Persistent):
 
 class ShineProtocol(WebSocketServerProtocol):
     """
-    our aiopener communication protocol for communicating with the game client
+    our aiopening communication protocol for communicating with the game client
      - a Protocol object is created upon connection and destroyed upon disconnection
      - thus, there is no persistency for Protocol objects, only for ProtocolFactories
      - every Protocol instance has access to its factory via the self.factory attribute
@@ -474,18 +474,18 @@ class ShineProtocol(WebSocketServerProtocol):
         # generate the new project in our userRecord
         world_name = json_obj["worldName"]
         # TODO: make world parameters in request_new_world customizable by client
-        self.currentProject.worlds[world_name] = aiopener.World(world_name, 2, 5)  # for now: maze-runner s=(x,y), a=4 directions + do-nothing
+        self.currentProject.worlds[world_name] = aiopening.World(world_name, 2, 5)  # for now: maze-runner s=(x,y), a=4 directions + do-nothing
         return self.send_json({"response": "new world created", "worldName": world_name})
 
     # creates a new algorithm in this project
     def request_new_algorithm(self, json_obj):
-        # TODO: write function for protocol to check given JSON params against internal aiopener function- and method-signatures
+        # TODO: write function for protocol to check given JSON params against internal aiopening function- and method-signatures
         self.sanity_check_message(json_obj, [
             ("algorithmClass" in json_obj, ShineProtocol.PROTOCOL_ERROR_FIELD_MISSING, False, "algorithmClass"),
             ])
         algo_class = json_obj["algorithmClass"]
         self.sanity_check_message(json_obj, [
-            (hasattr(sys.modules['aiopener'], algo_class) and issubclass(getattr(sys.modules['aiopener'], algo_class), aiopener.Algorithm),
+            (hasattr(sys.modules['aiopening'], algo_class) and issubclass(getattr(sys.modules['aiopening'], algo_class), aiopening.Algorithm),
                 ShineProtocol.PROTOCOL_ERROR_INVALID_FIELD_VALUE, False, "algorithmClass"),
             ("algorithmName" in json_obj, ShineProtocol.PROTOCOL_ERROR_FIELD_MISSING, False, "algorithmName"),
             ])
@@ -505,11 +505,11 @@ class ShineProtocol(WebSocketServerProtocol):
         ])
 
         # generate the new project in our userRecord
-        algo = getattr(sys.modules['aiopener'], algo_class)(algo_name, self.currentProject.algorithm_callback)
+        algo = getattr(sys.modules['aiopening'], algo_class)(algo_name, self.currentProject.algorithm_callback)
 
         # TODO: replace these calls with "set hyperparameters" (this is hardcoded right now to a certain algorithm)
-        algo.qFunction = aiopener.QTable(num_actions)
-        algo.model = aiopener.TabularDeterministicWorldModel(num_actions)
+        algo.qFunction = aiopening.QTable(num_actions)
+        algo.model = aiopening.TabularDeterministicWorldModel(num_actions)
 
         self.currentProject.algorithms[algo_name] = algo
         return self.send_json({"response": "new algorithm created", "algorithmName": algo_name, "algorithmClass": algo_class})
