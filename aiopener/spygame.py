@@ -232,28 +232,40 @@ class KeyboardInputs(EventObject):
         # stores the keys that we would like to be registered as important
         # - key: pygame keyboard code (e.g. pygame.K_ESCAPE, pygame.K_UP, etc..)
         # - value: True if currently pressed, False otherwise
-        # - needs to be ticked in order to yield up-to-date information
-        self.keyboard_registry = None
-        self.descriptions = None
-
-        if not key_list:
-            key_list = [[pygame.K_UP, "up"], [pygame.K_DOWN, "down"], [pygame.K_LEFT, "left"], [pygame.K_RIGHT, "right"]]
-        self.update_keys(key_list)
-
-    def update_keys(self, new_key_list: Union[List[int], None] = None):
-        self.unregister_events()
+        # - needs to be ticked in order to yield up-to-date information (this will be done by a GameLoop playing a Screen)
         self.keyboard_registry = {}
         self.descriptions = {}
+        self.desc_to_key = {}  # for reverse mapping from description (e.g. 'up') to int (e.g. pygame.K_UP)
+
+        if not key_list:
+            #key_list = [[pygame.K_UP, "up"], [pygame.K_DOWN, "down"], [pygame.K_LEFT, "left"], [pygame.K_RIGHT, "right"]]
+            key_list = ["up", "down", "left", "right"]
+        self.update_keys(key_list)
+
+    def update_keys(self, new_key_list: Union[List, None] = None):
+        """
+        populates our registry and other dicts with the new key-list given (may be an empty list)
+        :param list new_key_list: the new key list, where each item is the lower-case pygame keycode without the leading "K_" e.g. "up" for pygame.K_UP
+                                  - use None for clearing out the registry (no keys assigned)
+        """
+        self.unregister_events()
+        self.keyboard_registry.clear()
+        self.descriptions.clear()
+        self.desc_to_key.clear()
         if new_key_list:
-            for key, desc in new_key_list:
+            for desc in new_key_list:
+                key = getattr(pygame, "K_"+desc.upper())
                 self.keyboard_registry[key] = False
                 self.descriptions[key] = desc
+                self.desc_to_key[desc] = key
                 # signal that we might trigger the following events:
                 self.register_event("key_down." + desc, "key_up." + desc)
 
     def tick(self):
         """
-        pulls all keyboard events from the even queue and processes them according to our keyboard_inputs definition
+        pulls all keyboard events from the event queue and processes them according to our keyboard_registry/descriptions
+        - triggers events for all registered keys like: 'key_down.[desc]' (when  pressed) and 'key_up.[desc]' (when released),
+          where desc is the lowercase string after 'pygame.K_'... (e.g. 'down', 'up', etc..)
         """
         events = pygame.event.get([pygame.KEYDOWN, pygame.KEYUP])
         for e in events:
@@ -614,8 +626,8 @@ class GameLoop(object):
     def play_a_loop(**kwargs):
         """
         factory: plays a given GameLoop object or creates a new one using the given **kwargs options
-        Args:
-            **kwargs (any): 
+
+        :param any kwargs:
                 force_loop (bool): whether to play regardless of whether we still have some active loop running
                 callback (callable): the GameLoop's callback loop function
                 keyboard_inputs (KeyboardInputs): the GameLoop's KeyboardInputs object
@@ -623,9 +635,8 @@ class GameLoop(object):
                 max_fps (int): the max frames per second to loop through
                 screen_obj (Screen): alternatively, a Screen can be given, from which we will extract `display`, `max_fps` and `keyboard_inputs`
                 game_loop (Union[str,GameLoop]): the GameLoop to use (instead of creating a new one); "new" or [empty] for new one
-
-        Returns:
-            GameObject
+        :return: the created/played GameLoop object or None
+        :rtype: Union[GameLoop, None]
         """
 
         defaults(kwargs, {"force_loop": False, "screen_obj": None, "keyboard_inputs": None, "display": None, "max_fps": None, "game_loop": "new"})
@@ -672,12 +683,12 @@ class GameLoop(object):
             # do nothing
             return None
 
-    def __init__(self, callback: callable, display: Display, keyboard_inputs: KeyboardInputs = None, max_fps=60):
+    def __init__(self, callback: callable, display: Display, keyboard_inputs: KeyboardInputs=None, max_fps=60):
         """
 
         Args:
             callback (callable): The callback function used for looping
-            keyboard_inputs (KeyboardInputs): The leyboard input registry to use
+            keyboard_inputs (KeyboardInputs): The keyboard input registry to use
             max_fps (float): the maximum frame rate per second to allow when ticking. fps can be slower, but never faster
         """
         self.is_paused = True  # True -> Game loop will be paused (no frames, no ticks)
@@ -727,6 +738,7 @@ class GameLoop(object):
         self.frame += 1
 
 
+# TODO: can we get rid of Scenes altogether? They seem to make things overly complicated.
 class Scene(object):
     """
     A Scene class that allows a 'scene-func' to be run when the Scene is staged (on one of the Stages of the Game)
@@ -798,10 +810,10 @@ class Stage(GameObject):
     # - updates the pygame.display
     @staticmethod
     def stage_default_game_loop_callback(game_loop: GameLoop):
-        # determine dt
+        # clamp dt
         if game_loop.dt < 0:
             game_loop.dt = 1.0 / 60
-        if game_loop.dt > 1 / 15:
+        elif game_loop.dt > 1.0 / 15:
             game_loop.dt = 1.0 / 15
 
         # tick all Stages
@@ -887,13 +899,9 @@ class Stage(GameObject):
         # clean up an existing stage if necessary
         Stage.clear_stage(stage_idx)
 
-        # make this this the active stage and initialize the stage, calling loadScene to popuplate the stage if we have a scene
+        # make this this the active stage and initialize the stage, calling loadScene to populate the stage if we have a scene
         Stage.active_stage = stage_idx
         stage = Stage.stages[stage_idx] = options["stage_class"](scene, options)
-
-        ## load an assets object array
-        # if stage.options.asset:
-        #   stage.loadAssets()
 
         # setup the Stage via the Scene's scene_func
         if scene:
@@ -975,8 +983,6 @@ class Stage(GameObject):
         for sprite in self.sprites:
             if detector(sprite, *params):
                 return sprite
-
-    # TODO: def identify(self, ):
 
     def add_tiled_layer(self, pytmx_layer: pytmx.pytmx.TiledElement, pytmx_tiled_map: pytmx.pytmx.TiledMap):
         assert pytmx_layer.name not in self.tiled_layers, "ERROR: pytmx_layer with name {} already exists!".format(pytmx_layer.name)
@@ -1399,7 +1405,7 @@ class TileSprite(Sprite):
 class TiledObjectGroup(TmxLayer):
     """
     a wrapper class for the pytmx.TiledObjectGroup class, which represents an object layer in a tmx file
-    - generates all GameObjects specified in the layer
+    - generates all GameObjects specified in the layer (a.g. the agent, enemies, etc..)
     - implements `render` by looping through all GameObjects and rendering their Sprites one by one
     """
 
@@ -1513,15 +1519,21 @@ class Brain(Component):
             commands = []
         self.commands = {command: False for command in commands}
         self.game_obj_cmp_anim = None  # our GameObject's Animation Component (if any); needed for animation flags
+        self.animation_flags = 0  # a copy of the GameObject's current Animation flags (store copy here for performance reasons)
+
+    def reset(self):
+        """
+        sets all commands to False (makes this Brain inactive)
+        """
+        for key in self.commands:
+            self.commands[key] = False
 
     def added(self):
         # call our own tick method when event "pre_tick" is triggered on our GameObject
         self.game_object.on_event("pre_tick", self, "tick")
         # search for an Animation component
         self.game_obj_cmp_anim = self.game_object.components.get("animation")
-        self.animation_flags = 0  # a copy of the GameObject's current Animation flags (store copy here for performance reasons)
 
-    # TODO: needs to do RL with algorithm classes
     # for now, just translate keyboard_inputs from GameLoop object into our commands
     def tick(self, game_loop: GameLoop):
         # update current animation flags
@@ -1533,8 +1545,7 @@ class Brain(Component):
                 self.commands[desc] = value
         # all commands are blocked right now -> set everything to False
         else:
-            for key in self.commands:
-                self.commands[key] = False
+            self.reset()
 
 
 class Animation(Component):
@@ -2631,6 +2642,8 @@ class Level(Screen, metaclass=ABCMeta):
     def __init__(self, name: str = "test", **kwargs):
         super().__init__(name, **kwargs)
 
+        # TODO: warn here if keyboard_inputs is given (should be given in tmx file exclusively (including handlers))
+
         self.tmx_file = kwargs.get("tmx_file", "data/" + name.lower() + ".tmx")
         # load in the world's tmx file
         self.tmx_obj = pytmx.load_pygame(self.tmx_file)
@@ -2638,6 +2651,16 @@ class Level(Screen, metaclass=ABCMeta):
         self.height = self.tmx_obj.height * self.tmx_obj.tileheight
 
         self.register_event("mastered", "aborted", "lost")
+
+        # get keyboard_inputs directly from the pytmx object
+        if not self.keyboard_inputs.keyboard_registry:
+            descriptions = self.tmx_obj.properties.get("keyboard_inputs", "")
+            codes_and_descriptions = []
+            for d in descriptions.split(","):
+                pygame_code = getattr(pygame, "K_"+d.upper(), None)
+                assert pygame_code, "ERROR: in tmx file ({}) no pygame code associated with K_{}".format(self.tmx_file, d.upper())
+                codes_and_descriptions.append([pygame_code, d])
+            self.keyboard_inputs.update_keys(codes_and_descriptions)
 
 
 class GameManager(object):
@@ -2668,7 +2691,7 @@ class GameManager(object):
         DEBUG_FLAGS = debug_flags
 
         # create the Display object for the entire game: we pass it to all levels and screen objects
-        self.display = Display(600, 400, title)
+        self.display = Display(600, 400, title)  # use 600x400 for now (default); this will be reset to the largest Level dimensions further below
 
         # our levels (if any) determine the size of the display
         get_w_from_levels = True if width == 0 else False
@@ -2699,7 +2722,6 @@ class GameManager(object):
                     width = level.width
                 if get_h_from_levels and level.width > height:
                     height = level.height
-
             # a Screen
             else:
                 screen = class_(name, id=id_, display=self.display, keyboard_inputs=keyboard_inputs, max_fps=max_fps, **screen_or_level)

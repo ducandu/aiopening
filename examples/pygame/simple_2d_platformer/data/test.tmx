@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" renderorder="right-down" width="32" height="32" tilewidth="16" tileheight="16" nextobjectid="11">
  <properties>
-  <property name="actions" value="K_UP,K_DOWN,K_RIGHT,K_LEFT,K_SPACE,K_ESCAPE"/>
+  <property name="keyboard_inputs" value="up,down,left,right,space,escape"/>
  </properties>
  <tileset firstgid="1" source="wrbc.tsx"/>
  <tileset firstgid="1703" source="generic.tsx"/>
  <tileset firstgid="3303" source="erik.tsx"/>
- <tileset firstgid="3465" source="fireball.tsx"/>
  <layer name="goal_states" width="32" height="32">
   <properties>
    <property name="do_render" type="bool" value="false"/>

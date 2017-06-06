@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="16" tileheight="16" nextobjectid="4">
- <tileset firstgid="1" source="erik.tsx"/>
- <tileset firstgid="163" source="generic.tsx"/>
- <tileset firstgid="1763" source="wrbc.tsx"/>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="16" tileheight="16" nextobjectid="6">
+ <properties>
+  <property name="keyboard_inputs" value="escape,up,down,left,right"/>
+ </properties>
+ <tileset firstgid="1" source="../../../../server/pygame_clients/maze_runner/data/erik.tsx"/>
+ <tileset firstgid="163" source="../../../../server/pygame_clients/maze_runner/data/generic.tsx"/>
+ <tileset firstgid="1763" source="../../../../server/pygame_clients/maze_runner/data/wrbc.tsx"/>
  <layer name="collision" width="30" height="30">
   <properties>
    <property name="do_render" type="bool" value="true"/>
@@ -49,7 +52,14 @@
   </properties>
   <object id="1" gid="1" x="192" y="464" width="32" height="32">
    <properties>
-    <property name="aget" type="bool" value="true"/>
+    <property name="agent" type="bool" value="true"/>
+    <property name="class" value="Agent"/>
+    <property name="tsx" value="erik"/>
+   </properties>
+  </object>
+  <object id="5" gid="1" x="35" y="189" width="32" height="32">
+   <properties>
+    <property name="agent" type="bool" value="true"/>
     <property name="class" value="Agent"/>
     <property name="tsx" value="erik"/>
    </properties>

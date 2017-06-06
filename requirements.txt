@@ -1,2 +1,5 @@
 pygame
 pytmx
+websocket-client
+json
+tensorflow==1.1.0

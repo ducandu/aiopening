@@ -12,6 +12,7 @@ from typing import List, Callable, Union
 from abc import ABCMeta, abstractmethod
 import queue
 from collections import namedtuple
+import spygame as spyg
 
 import tensorflow as tf
 import numpy as np
@@ -102,6 +103,48 @@ class PriorityReplayMemory(object):
         return self.items.qsize()
 
 
+class ActionSpace(object):
+    """
+    class that maps an RL action to certain keyboard inputs or combinations of keyboard inputs
+    - example: MDP with 2 agents: ctrl to switch between them, each agent can go in all 4 directions, but only one agent at a time may move
+               ActionSpace=[a1-up, a1-down, a1-left, a1-right, a2-up, a2-down, a2-left, a2-right] <- each of these needs to be mapped to a proper key
+               sequence also taking into account the frames_per_action rate
+               e.g. action=a2-up (with a1 currently the active agent) -> key sequence: ctrl immediately followed by up (then leave up for n frames depending
+               on frames_per_action value)
+    - for complex customized mappings: can be inherited from to keep some state information (e.g. which one is the active player?)
+    """
+    def __init__(self, action_list: list):
+        """
+        :param list action_list: the list of actions to map to keys (by default, map each action to its equally named key)
+        """
+        self.action_list = action_list
+        # generate simple mapping
+        self.mapping = {}
+        for a in action_list:
+            self.mapping[a] = a
+
+    def map_a_to_keys(self, a):
+        """
+        maps an action to its resulting keyboard sequence
+        - returns a list of keyboard combinations, where each item in the list represents the keys to be pressed during a single game frame
+        - if the returned list is shorter than the MDP's frames_per_action setting, it is assumed that the last action combination in the list
+          will last until the end of the MDP time step (until frames_per_action frames have been played)
+        :param str a: a string describing the action (has to be one of self.action_list)
+        :return: list of keyboard combinations (each combination is itself a list) e.g. [[ctrl, up], [up]] for switching agent and then
+                 moving up with the new agent
+        :rtype: List[List]
+        """
+        return [[self.mapping[a]]]  # simple default behavior: repeat the keyboard input for all frames_per_action frames
+
+    def __len__(self):
+        """
+        :return: the size of the action space: |A|
+        :rtype: int
+        """
+        return len(self.action_list)
+
+
+# TODO: make obsolete
 class World(object):
     """
     a world object that stores all parameters necessary to handle the world on the server side
@@ -200,6 +243,47 @@ class TabularDeterministicWorldModel(dict):
             if value[1] == s_:
                 ret.append((key[0], key[1], value[0]))  # sar
         return ret
+
+
+# TODO: should replace World class completely
+class MDP(spyg.Level, metaclass=ABCMeta):
+    """
+    an abstract base class for a solvable spyg.Level (the MDP)
+    - any GameManagers hat would like to do RL via NewAlgorithm on an MDP, need to use MDP Levels, not plain spyg.Levels
+      -- options to the MDP objects can be given via the spyg.GameManager c'tor
+    - adds rl_play method to play the Level in RL-mode (no or reduced rendering (e.g. grayscale -> shrinked screen size, etc..))
+    """
+    def __init__(self, name, **kwargs):
+        super().__init__(name, **kwargs)
+
+        self.action_space = kwargs.get("action_space", ActionSpace(self.keyboard_inputs.desc_to_key.keys()))
+        # by default, make each action last for 4 frames
+        self.frames_per_action = kwargs.get("fpa", 4)  # the fps parameter has to be set in the GameManager c'tor
+
+
+class NewAlgo(object, metaclass=ABCMeta):
+    """
+    an RL algorithm that takes a spyg.GameManager and can then solve different levels
+    via the spyg.Brain Component of the main agent
+    """
+    def __init__(self, name="Algo", game_manager=None):
+        self.name = name
+        self.game_manager = game_manager
+
+    # runs this algorithm
+    @abstractmethod
+    def run(self, options: dict={}) -> None:
+        pass
+
+    # resets all data associated with this algo (but not the algo's current hyper-parameters)
+    @abstractmethod
+    def reset_parameters(self) -> None:
+        pass
+
+    # sets the algos hyper-parameters by keyword
+    @abstractmethod
+    def set_hyperparameters(self, **kwargs) -> None:
+        pass
 
 
 class Algorithm(object, metaclass=ABCMeta):
@@ -325,7 +409,7 @@ class RandomSampleOneStepTabularQLearner(BasicQLearner):
 
 class PrioritizedSweepingQLearner(BasicQLearner):
     """
-    a prioritized sweeping q-learning algorithm (R. Sutton, A. Barto - RL, an Introduction 2016)
+    a prioritized sweeping q-learning algorithm (R. Sutton, A. Barto - RL, an Introduction (draft) 2017)
     """
 
     def __init__(self, name: str, callback: Callable[[dict], None],

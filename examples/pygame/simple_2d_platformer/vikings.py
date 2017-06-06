@@ -21,18 +21,18 @@ import spygame as spyg
 
 class Viking(spyg.AnimatedSprite, metaclass=ABCMeta):
     """
-    a generic Viking
-
+    a generic Viking class
     """
 
-    def __init__(self, x: int, y: int, spritesheet: spyg.SpriteSheet):
+    def __init__(self, x: int, y: int, spritesheet: spyg.SpriteSheet, animation_setup: dict):
         """
-        Args:
-            x (int): the start x position
-            y (int): the start y position
-            spritesheet (spyg.Spritesheet): the SpriteSheet object (tsx file) to use for this Viking
+        :param int x: the start x position
+        :param int y: the start y position
+        :param spyg.SpriteSheet spritesheet: the SpriteSheet object (tsx file) to use for this Viking
+        :param dict animation_setup: a dictionary to be passed to spyg.Animation.register_settings and
+                stored under the SpriteSheet.name in the animations registry
         """
-        super().__init__(x, y, spritesheet)
+        super().__init__(x, y, spritesheet, animation_setup)
 
         self.handles_own_collisions = True
         self.type = spyg.Sprite.get_type("friendly")
@@ -465,12 +465,6 @@ class VikingLevel(spyg.Level):
 
         # hook to the Level's Viking objects (defined in the tmx file's TiledObjectGroup)
         self.vikings = []
-        # overwrite empty keyboard inputs
-        # arrows, ctrl (switch viking), d, s, space, esc
-        self.keyboard_inputs = spyg.KeyboardInputs([[pygame.K_UP, "up"], [pygame.K_DOWN, "down"], [pygame.K_LEFT, "left"], [pygame.K_RIGHT, "right"],
-                                                    [pygame.K_SPACE, "action1"], [pygame.K_d, "action2"],
-                                                    [pygame.K_RCTRL, "ctrl"], [pygame.K_ESCAPE, "esc"]])
-
         self.state = spyg.State()
         self.state.register_event("changed.active_viking")
 
@@ -485,9 +479,9 @@ class VikingLevel(spyg.Level):
         stage = spyg.Stage.stage_scene(scene, 0, {
                                         "screen_obj": self,
                                         "components": [spyg.Viewport(self.display)],
-                                        "tile_layer_collisions": (spyg.PlatformerCollision(), spyg.PlatformerCollision()),
-                                        "tile_layer_collision_detector": spyg.SATCollision.collide,
-                                        "tile_layer_collision_handler": spyg.PlatformerPhysics.tile_layer_physics_collision_handler
+                                        "tile_layer_physics_collisions": (spyg.PlatformerCollision(), spyg.PlatformerCollision()),
+                                        "tile_layer_physics_collision_detector": spyg.SATCollision.collide,
+                                        "tile_layer_physics_collision_handler": spyg.PlatformerPhysics.tile_layer_physics_collision_handler
         })
 
         # find all Vikings in the Stage and store them for us

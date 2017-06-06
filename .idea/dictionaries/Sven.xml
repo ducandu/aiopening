@@ -58,6 +58,7 @@
       <w>unpause</w>
       <w>unregister</w>
       <w>upsert</w>
+      <w>websocket</w>
       <w>zodb</w>
     </words>
   </dictionary>

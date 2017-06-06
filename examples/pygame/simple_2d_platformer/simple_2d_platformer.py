@@ -2,7 +2,7 @@ from pygame import K_UP, K_DOWN
 
 import spygame as spyg
 # import server.pygame.simple_2d_platformer.vikings as vikings
-from . import vikings
+import vikings
 
 debug_flags = (#spyg.DEBUG_RENDER_COLLISION_TILES |
                #spyg.DEBUG_DONT_RENDER_TILED_TILE_LAYERS |
@@ -18,7 +18,7 @@ game_manager = spyg.GameManager([
     # Screen example (a simple start screen with a menu-selector)
     {"class": vikings.VikingScreen,
         "name": "start", "id": 0,
-        "keyboard_inputs": spyg.KeyboardInputs([[K_UP, "up"], [K_DOWN, "down"]]),  # only up and down allowed
+        "keyboard_inputs": spyg.KeyboardInputs(["up", "down", "return"]),  # only up and down allowed in this Screen
         "sprites": [],
         "labels": [],
      },

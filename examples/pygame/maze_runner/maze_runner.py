@@ -10,9 +10,8 @@
  -------------------------------------------------------------------------
 """
 
-from abc import ABCMeta
-import pygame
-import aiopener.spygame as spyg
+import pygame  # TODO: get rid of this dependency here -> move pygame keys into tmx
+import spygame as spyg
 
 debug_flags = (#spyg.DEBUG_RENDER_COLLISION_TILES |
                #spyg.DEBUG_DONT_RENDER_TILED_TILE_LAYERS |
@@ -30,10 +29,7 @@ class MazeRunnerLevel(spyg.Level):
 
         # hook to the Level's agent
         self.agent = None
-        # overwrite empty keyboard inputs
-        # arrows
-        self.keyboard_inputs = spyg.KeyboardInputs([[pygame.K_UP, "up"], [pygame.K_DOWN, "down"], [pygame.K_LEFT, "left"], [pygame.K_RIGHT, "right"]])
-        self.register_event("mastered", "aborted", "lost", "viking_reached_exit")
+        self.register_event("mastered", "aborted", "lost")
 
     def play(self):
         # define Level's Scene (default function that populates Stage with stuff from tmx file)
@@ -65,7 +61,7 @@ class MazeRunnerLevel(spyg.Level):
         self.done()
 
 
-class Agent(spyg.AnimatedSprite, metaclass=ABCMeta):
+class Agent(spyg.AnimatedSprite):
     """
     a generic Agent walking in the maze
 
@@ -87,7 +83,7 @@ class Agent(spyg.AnimatedSprite, metaclass=ABCMeta):
         self.handles_own_collisions = True
         self.type = spyg.Sprite.get_type("friendly")
 
-        # add components to this Viking
+        # add components to this Agent
         # loop time line:
         # - pre-tick: Brain (needs animation comp to check e.g., which commands are disabled), Physics (movement + collision resolution)
         # - tick: chose animation to play

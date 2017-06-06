@@ -5,15 +5,43 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d388c4b5-24d7-47ab-95dd-12b19d0faafc" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/logo.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/aiopener/client/__init__.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/requirements.txt" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/pygame/test.py" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/AIOpener.iml" afterPath="$PROJECT_DIR$/.idea/AIOpener.iml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/aiopener/client/client.py" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/pygame/simple_2d_platformer/data/fireball.tsx" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/server/pygame_clients/maze_runner/data/erik.tsx" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/server/pygame_clients/maze_runner/data/generic.tsx" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/server/pygame_clients/maze_runner/data/maze.tmx" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/server/pygame_clients/maze_runner/data/wrbc.tsx" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/server/pygame_clients/maze_runner/images/erik.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/server/pygame_clients/maze_runner/images/generic.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/server/pygame_clients/maze_runner/images/wrbc.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/server/pygame_clients/maze_runner/maze_runner.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/server/pygame_clients/simple_2d_platformer/data/erik.tsx" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/server/pygame_clients/simple_2d_platformer/data/fireball.tsx" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/server/pygame_clients/simple_2d_platformer/data/generic.tsx" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/server/pygame_clients/simple_2d_platformer/data/test.tmx" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/server/pygame_clients/simple_2d_platformer/data/test.tmx.W15312" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/server/pygame_clients/simple_2d_platformer/data/test.tmx.j12044" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/server/pygame_clients/simple_2d_platformer/data/test.tmx.v15312" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/server/pygame_clients/simple_2d_platformer/data/wrbc.tsx" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/server/pygame_clients/simple_2d_platformer/images/debug.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/server/pygame_clients/simple_2d_platformer/images/erik.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/server/pygame_clients/simple_2d_platformer/images/generic.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/server/pygame_clients/simple_2d_platformer/images/test.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/server/pygame_clients/simple_2d_platformer/images/wrbc.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/server/pygame_clients/simple_2d_platformer/simple_2d_platformer.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/server/pygame_clients/simple_2d_platformer/vikings.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/server/pygame_clients/test.py" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dictionaries/Sven.xml" afterPath="$PROJECT_DIR$/.idea/dictionaries/Sven.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aiopener/aiopener.py" afterPath="$PROJECT_DIR$/aiopener/aiopener.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aiopener/client/__init__.py" afterPath="$PROJECT_DIR$/aiopener/client/__init__.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aiopener/spygame.py" afterPath="$PROJECT_DIR$/aiopener/spygame.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/examples/pygame/maze_runner/data/maze.tmx" afterPath="$PROJECT_DIR$/examples/pygame/maze_runner/data/maze.tmx" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/examples/pygame/maze_runner/maze_runner.py" afterPath="$PROJECT_DIR$/examples/pygame/maze_runner/maze_runner.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/examples/pygame/simple_2d_platformer/data/test.tmx" afterPath="$PROJECT_DIR$/examples/pygame/simple_2d_platformer/data/test.tmx" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/examples/pygame/simple_2d_platformer/simple_2d_platformer.py" afterPath="$PROJECT_DIR$/examples/pygame/simple_2d_platformer/simple_2d_platformer.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/examples/pygame/simple_2d_platformer/vikings.py" afterPath="$PROJECT_DIR$/examples/pygame/simple_2d_platformer/vikings.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/requirements.txt" afterPath="$PROJECT_DIR$/requirements.txt" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -25,8 +53,10 @@
   <component name="CoverageDataManager">
     <SUITE FILE_PATH="coverage/shine$test.coverage" NAME="test Coverage Results" MODIFIED="1493291549705" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/server/pygame_clients" />
     <SUITE FILE_PATH="coverage/AIOpener$maze_runner.coverage" NAME="maze_runner Coverage Results" MODIFIED="1496694075364" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/server/pygame_clients/maze_runner" />
+    <SUITE FILE_PATH="coverage/AIOpener$maze_runner__1_.coverage" NAME="maze_runner (1) Coverage Results" MODIFIED="1496774736061" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/examples/pygame/maze_runner" />
     <SUITE FILE_PATH="coverage/shine$test_deep_learning_project.coverage" NAME="test_deep_learning_project Coverage Results" MODIFIED="1488191983535" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
     <SUITE FILE_PATH="coverage/shine$shine.coverage" NAME="shine Coverage Results" MODIFIED="1487486476704" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/AIOpener$simple_2d_platformer__1_.coverage" NAME="simple_2d_platformer (1) Coverage Results" MODIFIED="1496766389686" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/examples/pygame/simple_2d_platformer" />
     <SUITE FILE_PATH="coverage/shine$server.coverage" NAME="server Coverage Results" MODIFIED="1491166932620" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/server" />
     <SUITE FILE_PATH="coverage/shine$Unittests_in_test_replayMemory.coverage" NAME="Unittests in test_replayMemory Coverage Results" MODIFIED="1487512803804" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
     <SUITE FILE_PATH="coverage/shine$simple_2d_platformer.coverage" NAME="simple_2d_platformer Coverage Results" MODIFIED="1496395329352" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/server/pygame_clients/simple_2d_platformer" />
@@ -35,11 +65,57 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="spygame.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/aiopener/spygame.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="46">
+              <caret line="685" column="52" lean-forward="true" selection-start-line="685" selection-start-column="52" selection-end-line="685" selection-end-column="52" />
+              <folding>
+                <element signature="e#279#318#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="aiopener.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/aiopener/aiopener.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="408">
+              <caret line="258" column="106" lean-forward="false" selection-start-line="258" selection-start-column="106" selection-end-line="258" selection-end-column="106" />
+              <folding>
+                <element signature="e#292#305#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="maze_runner.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/examples/pygame/maze_runner/maze_runner.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="31">
-              <caret line="14" column="28" lean-forward="true" selection-start-line="14" selection-start-column="28" selection-end-line="14" selection-end-column="28" />
+            <state relative-caret-position="164">
+              <caret line="31" column="0" lean-forward="false" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
+              <folding>
+                <element signature="e#319#402#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="simple_2d_platformer.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/examples/pygame/simple_2d_platformer/simple_2d_platformer.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="272">
+              <caret line="20" column="70" lean-forward="false" selection-start-line="20" selection-start-column="70" selection-end-line="20" selection-end-column="70" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="vikings.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/examples/pygame/simple_2d_platformer/vikings.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="233">
+              <caret line="505" column="21" lean-forward="false" selection-start-line="505" selection-start-column="21" selection-end-line="505" selection-end-column="21" />
               <folding />
             </state>
           </provider>
@@ -48,47 +124,42 @@
       <file leaf-file-name="requirements.txt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/requirements.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
-              <caret line="1" column="5" lean-forward="false" selection-start-line="1" selection-start-column="5" selection-end-line="1" selection-end-column="5" />
+            <state relative-caret-position="51">
+              <caret line="3" column="4" lean-forward="false" selection-start-line="3" selection-start-column="4" selection-end-line="3" selection-end-column="4" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="spygame.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/aiopener/spygame.py">
+      <file leaf-file-name="server.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/aiopener/server/server.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-102">
+            <state relative-caret-position="0">
               <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding>
-                <element signature="e#279#318#0" expanded="true" />
+                <element signature="e#345#355#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="__init__.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/aiopener/client/__init__.py">
+      <file leaf-file-name="server.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/server/server.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="34">
-              <caret line="2" column="3" lean-forward="true" selection-start-line="2" selection-start-column="3" selection-end-line="2" selection-end-column="3" />
-              <folding />
+            <state relative-caret-position="153">
+              <caret line="9" column="3" lean-forward="false" selection-start-line="9" selection-start-column="3" selection-end-line="9" selection-end-column="3" />
+              <folding>
+                <element signature="e#345#355#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="logo.png" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/logo.png">
-          <provider selected="true" editor-type-id="images">
-            <state />
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="aiopener.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/aiopener/aiopener.py">
+      <file leaf-file-name="main.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/quintus_clients/mazerunner/main.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="340">
-              <caret line="233" column="16" lean-forward="false" selection-start-line="233" selection-start-column="16" selection-end-line="233" selection-end-column="16" />
+            <state relative-caret-position="5321">
+              <caret line="313" column="1" lean-forward="false" selection-start-line="159" selection-start-column="0" selection-end-line="313" selection-end-column="1" />
               <folding />
             </state>
           </provider>
@@ -105,21 +176,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>def register_sett</find>
-      <find>StepPhysics</find>
-      <find>Step</find>
-      <find>TileLayer</find>
-      <find>AABBCollision</find>
-      <find>try_collide</find>
-      <find>TiledTileLayer</find>
-      <find>collision_handler</find>
-      <find>register_scene</find>
-      <find>get_collision_objects</find>
-      <find>physics_coll</find>
-      <find>stage_scene</find>
-      <find>tile_layer_</find>
-      <find>AABB</find>
-      <find>collide</find>
       <find>collision</find>
       <find>Platform</find>
       <find>impact</find>
@@ -135,6 +191,21 @@
       <find>.image =</find>
       <find>event.get</find>
       <find>GameMana</find>
+      <find>screen</find>
+      <find>:retur</find>
+      <find>play_a_loop</find>
+      <find>tiled_layers_to_collide</find>
+      <find>add_tiled</find>
+      <find>TiledObjectGroup</find>
+      <find>class TiledObjectGroup</find>
+      <find>TmxLayer</find>
+      <find>tiled_map</find>
+      <find>add_tiled_layer</find>
+      <find>tmx_obj</find>
+      <find>add_tile</find>
+      <find>Stage</find>
+      <find>stage_scene</find>
+      <find>KeyboardInputs</find>
     </findStrings>
     <replaceStrings>
       <replace>Sprite.register_t</replace>
@@ -147,9 +218,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/server/quintus_clients/mazerunner/lib/quintus_sprites.js" />
-        <option value="$PROJECT_DIR$/server/server.py" />
-        <option value="$PROJECT_DIR$/server/quintus_clients/mazerunner/index.html" />
         <option value="$PROJECT_DIR$/server/quintus_clients/mazerunner/main.js" />
         <option value="$PROJECT_DIR$/server/server_protocol.py" />
         <option value="$PROJECT_DIR$/server/quintus_clients/mazerunner/lib/quintus_input.js" />
@@ -184,9 +252,7 @@
         <option value="$PROJECT_DIR$/setup.py" />
         <option value="$PROJECT_DIR$/docs/conf.py" />
         <option value="$PROJECT_DIR$/docs/index.rst" />
-        <option value="$PROJECT_DIR$/aiopener.egg-info/PKG-INFO" />
         <option value="$PROJECT_DIR$/setup.py" />
-        <option value="$PROJECT_DIR$/aiopener/aiopener.py" />
         <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/aiopener/__init__.py" />
         <option value="$PROJECT_DIR$/aiopener/spygame/spygame.py" />
@@ -194,10 +260,15 @@
         <option value="$PROJECT_DIR$/server/pygame_clients/maze_runner/maze_runner.py" />
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/examples/pygame/simple_2d_platformer/data/erik.tsx" />
-        <option value="$PROJECT_DIR$/aiopener/spygame.py" />
-        <option value="$PROJECT_DIR$/examples/pygame/maze_runner/maze_runner.py" />
-        <option value="$PROJECT_DIR$/requirements.txt" />
         <option value="$PROJECT_DIR$/aiopener/client/__init__.py" />
+        <option value="$PROJECT_DIR$/aiopener.egg-info/PKG-INFO" />
+        <option value="$PROJECT_DIR$/aiopener/client/client.py" />
+        <option value="$PROJECT_DIR$/requirements.txt" />
+        <option value="$PROJECT_DIR$/aiopener/aiopener.py" />
+        <option value="$PROJECT_DIR$/examples/pygame/maze_runner/maze_runner.py" />
+        <option value="$PROJECT_DIR$/examples/pygame/simple_2d_platformer/simple_2d_platformer.py" />
+        <option value="$PROJECT_DIR$/examples/pygame/simple_2d_platformer/vikings.py" />
+        <option value="$PROJECT_DIR$/aiopener/spygame.py" />
       </list>
     </option>
   </component>
@@ -258,6 +329,117 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AIOpener" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="External Libraries" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AIOpener" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="aiopener" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AIOpener" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="aiopener" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="server" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AIOpener" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="aiopener" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="quintus_clients" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AIOpener" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="aiopener" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="quintus_clients" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mazerunner" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AIOpener" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="aiopener" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="examples" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pygame" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="simple_2d_platformer" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AIOpener" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="aiopener" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="examples" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pygame" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="Scratches" />
       <pane id="Scope">
         <subPane subId="Project Files">
           <PATH>
@@ -286,99 +468,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="ProjectPane">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AIOpener" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="&lt; Python 3.5.2 (C:\Program Files\Anaconda3\python.exe) &gt;" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AIOpener" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="aiopener" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AIOpener" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="aiopener" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="quintus_clients" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AIOpener" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="aiopener" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="examples" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="pygame" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AIOpener" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="aiopener" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="aiopener" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AIOpener" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="aiopener" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="aiopener" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="client" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -392,15 +481,15 @@
     <property name="node.js.selected.package.tslint" value="" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="L:\Programming\ReinforcementLearning\aiopener\aiopener" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="L:\Programming\ReinforcementLearning\aiopener\" />
       <recent name="L:\Programming\ReinforcementLearning\aiopener\examples" />
       <recent name="L:\Programming\ReinforcementLearning\aiopener\aiopener\clients\" />
       <recent name="L:\Programming\ReinforcementLearning\aiopener\aiopener" />
       <recent name="L:\Programming\ReinforcementLearning\aiopener\aiopener\" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="L:\Programming\ReinforcementLearning\aiopener\aiopener" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -415,7 +504,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.maze_runner">
+  <component name="RunManager" selected="Python.maze_runner (1)">
     <configuration default="false" name="test" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -430,25 +519,6 @@
       <module name="shine" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/server/pygame_clients/test.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <method />
-    </configuration>
-    <configuration default="false" name="spygame" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/shine/spygame" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="shine" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/shine/spygame/spygame.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -487,6 +557,44 @@
       <module name="AIOpener" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/server/pygame_clients/maze_runner/maze_runner.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="simple_2d_platformer (1)" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/examples/pygame/simple_2d_platformer" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="AIOpener" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/examples/pygame/simple_2d_platformer/simple_2d_platformer.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="maze_runner (1)" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/examples/pygame/maze_runner" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="AIOpener" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/examples/pygame/maze_runner/maze_runner.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -640,18 +748,20 @@
       <option name="_new_targetType" value="&quot;PATH&quot;" />
       <method />
     </configuration>
-    <list size="4">
+    <list size="5">
       <item index="0" class="java.lang.String" itemvalue="Python.test" />
-      <item index="1" class="java.lang.String" itemvalue="Python.spygame" />
-      <item index="2" class="java.lang.String" itemvalue="Python.simple_2d_platformer" />
-      <item index="3" class="java.lang.String" itemvalue="Python.maze_runner" />
+      <item index="1" class="java.lang.String" itemvalue="Python.simple_2d_platformer" />
+      <item index="2" class="java.lang.String" itemvalue="Python.maze_runner" />
+      <item index="3" class="java.lang.String" itemvalue="Python.simple_2d_platformer (1)" />
+      <item index="4" class="java.lang.String" itemvalue="Python.maze_runner (1)" />
     </list>
     <recent_temporary>
-      <list size="4">
-        <item index="0" class="java.lang.String" itemvalue="Python.maze_runner" />
-        <item index="1" class="java.lang.String" itemvalue="Python.simple_2d_platformer" />
-        <item index="2" class="java.lang.String" itemvalue="Python.test" />
-        <item index="3" class="java.lang.String" itemvalue="Python.spygame" />
+      <list size="5">
+        <item index="0" class="java.lang.String" itemvalue="Python.maze_runner (1)" />
+        <item index="1" class="java.lang.String" itemvalue="Python.simple_2d_platformer (1)" />
+        <item index="2" class="java.lang.String" itemvalue="Python.maze_runner" />
+        <item index="3" class="java.lang.String" itemvalue="Python.simple_2d_platformer" />
+        <item index="4" class="java.lang.String" itemvalue="Python.test" />
       </list>
     </recent_temporary>
   </component>
@@ -795,7 +905,14 @@
       <option name="project" value="LOCAL" />
       <updated>1496692260240</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="- added logo&#10;- retested maze_runner with new dir structure">
+      <created>1496694650173</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1496694650173</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -807,9 +924,8 @@
       <window_info id="Python Console" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.34968603" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32539064" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33987442" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="TypeScript" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14101562" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Inspection Results" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23361522" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14101562" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Inspection Results" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23044397" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3372093" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -822,6 +938,7 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" x="104" y="182" width="2376" height="856" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="TypeScript" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="combo" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
     </layout>
@@ -893,7 +1010,8 @@
     <MESSAGE value="- update gitignore" />
     <MESSAGE value="- finish TopDownPhysics and successfuly tested the maze_runner game" />
     <MESSAGE value="- restructured directory structure&#10;-- server, client, examples, etc.." />
-    <option name="LAST_COMMIT_MESSAGE" value="- restructured directory structure&#10;-- server, client, examples, etc.." />
+    <MESSAGE value="- added logo&#10;- retested maze_runner with new dir structure" />
+    <option name="LAST_COMMIT_MESSAGE" value="- added logo&#10;- retested maze_runner with new dir structure" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -915,7 +1033,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/aiopener/spygame.py</url>
-          <line>319</line>
+          <line>331</line>
           <option name="timeStamp" value="136" />
         </line-breakpoint>
       </breakpoints>
@@ -934,99 +1052,10 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/aiopener.egg-info/top_level.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/aiopener.egg-info/dependency_links.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/aiopener/spygame/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="12" lean-forward="false" selection-start-line="4" selection-start-column="12" selection-end-line="4" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/docs/conf.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1785">
-          <caret line="106" column="29" lean-forward="false" selection-start-line="106" selection-start-column="21" selection-end-line="106" selection-end-column="32" />
-          <folding>
-            <element signature="e#684#693#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/docs/index.rst">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="18" column="23" lean-forward="false" selection-start-line="18" selection-start-column="23" selection-end-line="18" selection-end-column="23" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/aiopener.egg-info/PKG-INFO">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/setup.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="125" lean-forward="false" selection-start-line="14" selection-start-column="125" selection-end-line="14" selection-end-column="125" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/quintus_clients/mazerunner/lib/quintus_sprites.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="303">
-          <caret line="721" column="2" lean-forward="false" selection-start-line="721" selection-start-column="2" selection-end-line="721" selection-end-column="2" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/pygame_clients/simple_2d_platformer/test.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="756">
-          <caret line="46" column="0" lean-forward="false" selection-start-line="46" selection-start-column="0" selection-end-line="46" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="10" column="2" lean-forward="true" selection-start-line="10" selection-start-column="2" selection-end-line="10" selection-end-column="2" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/pygame_clients/simple_2d_platformer/simple_2d_platformer.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#31#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/server/quintus_clients/lost_vikings/lib/quintus_anim.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="303">
           <caret line="22" column="14" lean-forward="false" selection-start-line="22" selection-start-column="14" selection-end-line="22" selection-end-column="14" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1034,9 +1063,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-663">
           <caret line="129" column="23" lean-forward="false" selection-start-line="129" selection-start-column="23" selection-end-line="129" selection-end-column="23" />
-          <folding>
-            <element signature="n#!!doc" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1044,9 +1070,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="246">
           <caret line="162" column="21" lean-forward="false" selection-start-line="162" selection-start-column="11" selection-end-line="162" selection-end-column="21" />
-          <folding>
-            <element signature="n#!!doc" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1062,25 +1085,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/server.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="48" column="73" lean-forward="false" selection-start-line="48" selection-start-column="61" selection-end-line="48" selection-end-column="73" />
-          <folding>
-            <element signature="e#345#355#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/aiopener/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="13" column="31" lean-forward="false" selection-start-line="13" selection-start-column="31" selection-end-line="13" selection-end-column="31" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1098,7 +1102,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1113,9 +1116,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="195">
           <caret line="109" column="30" lean-forward="false" selection-start-line="109" selection-start-column="30" selection-end-line="109" selection-end-column="30" />
-          <folding>
-            <element signature="e#319#342#0" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1123,7 +1124,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1131,7 +1131,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1139,7 +1138,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1147,7 +1145,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1170,7 +1167,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1178,7 +1174,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1186,7 +1181,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1194,7 +1188,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="17">
           <caret line="1" column="5" lean-forward="true" selection-start-line="1" selection-start-column="5" selection-end-line="1" selection-end-column="5" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1202,7 +1195,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1210,7 +1202,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1218,7 +1209,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1226,7 +1216,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1234,7 +1223,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1242,7 +1230,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1250,7 +1237,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1258,7 +1244,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1266,11 +1251,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="36" lean-forward="false" selection-start-line="0" selection-start-column="36" selection-end-line="0" selection-end-column="36" />
-          <folding>
-            <marker date="1491381341557" expanded="true" signature="39:341" ph="&lt;tileset/&gt;" />
-            <marker date="1491381341557" expanded="true" signature="184:330" ph="&lt;tile/&gt;" />
-            <marker date="1491381341557" expanded="true" signature="200:321" ph="&lt;properties/&gt;" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1278,9 +1258,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <marker date="1492547563453" expanded="true" signature="39:233" ph="&lt;tileset/&gt;" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1288,99 +1265,166 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="17">
           <caret line="1" column="1" lean-forward="true" selection-start-line="1" selection-start-column="1" selection-end-line="1" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/pygame/test.py" />
+    <entry file="file://$PROJECT_DIR$/logo.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="10" column="2" lean-forward="true" selection-start-line="10" selection-start-column="2" selection-end-line="10" selection-end-column="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/aiopener/server/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/aiopener/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="13" column="31" lean-forward="false" selection-start-line="13" selection-start-column="31" selection-end-line="13" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/quintus_clients/mazerunner/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/quintus_clients/mazerunner/main.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5321">
+          <caret line="313" column="1" lean-forward="false" selection-start-line="159" selection-start-column="0" selection-end-line="313" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/server.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="9" column="3" lean-forward="false" selection-start-line="9" selection-start-column="3" selection-end-line="9" selection-end-column="3" />
           <folding>
-            <marker date="1493369319391" expanded="true" signature="39:2607" ph="&lt;tileset/&gt;" />
-            <marker date="1493369319391" expanded="true" signature="192:305" ph="&lt;tile/&gt;" />
-            <marker date="1493369319391" expanded="true" signature="208:296" ph="&lt;properties/&gt;" />
-            <marker date="1493369319391" expanded="true" signature="307:459" ph="&lt;tile/&gt;" />
-            <marker date="1493369319391" expanded="true" signature="323:450" ph="&lt;properties/&gt;" />
-            <marker date="1493369319391" expanded="true" signature="461:613" ph="&lt;tile/&gt;" />
-            <marker date="1493369319391" expanded="true" signature="477:604" ph="&lt;properties/&gt;" />
-            <marker date="1493369319391" expanded="true" signature="615:767" ph="&lt;tile/&gt;" />
-            <marker date="1493369319391" expanded="true" signature="631:758" ph="&lt;properties/&gt;" />
-            <marker date="1493369319391" expanded="true" signature="769:921" ph="&lt;tile/&gt;" />
-            <marker date="1493369319391" expanded="true" signature="785:912" ph="&lt;properties/&gt;" />
-            <marker date="1493369319391" expanded="true" signature="923:1075" ph="&lt;tile/&gt;" />
-            <marker date="1493369319391" expanded="true" signature="939:1066" ph="&lt;properties/&gt;" />
-            <marker date="1493369319391" expanded="true" signature="1077:1229" ph="&lt;tile/&gt;" />
-            <marker date="1493369319391" expanded="true" signature="1093:1220" ph="&lt;properties/&gt;" />
-            <marker date="1493369319391" expanded="true" signature="1231:1384" ph="&lt;tile/&gt;" />
-            <marker date="1493369319391" expanded="true" signature="1247:1375" ph="&lt;properties/&gt;" />
-            <marker date="1493369319391" expanded="true" signature="1386:1539" ph="&lt;tile/&gt;" />
-            <marker date="1493369319391" expanded="true" signature="1402:1530" ph="&lt;properties/&gt;" />
-            <marker date="1493369319391" expanded="true" signature="1541:1695" ph="&lt;tile/&gt;" />
-            <marker date="1493369319391" expanded="true" signature="1558:1686" ph="&lt;properties/&gt;" />
-            <marker date="1493369319391" expanded="true" signature="1697:1851" ph="&lt;tile/&gt;" />
-            <marker date="1493369319391" expanded="true" signature="1714:1842" ph="&lt;properties/&gt;" />
-            <marker date="1493369319391" expanded="true" signature="1853:2007" ph="&lt;tile/&gt;" />
-            <marker date="1493369319391" expanded="true" signature="1870:1998" ph="&lt;properties/&gt;" />
-            <marker date="1493369319391" expanded="true" signature="2009:2163" ph="&lt;tile/&gt;" />
-            <marker date="1493369319391" expanded="true" signature="2026:2154" ph="&lt;properties/&gt;" />
-            <marker date="1493369319391" expanded="true" signature="2165:2271" ph="&lt;tile/&gt;" />
-            <marker date="1493369319391" expanded="true" signature="2182:2262" ph="&lt;properties/&gt;" />
-            <marker date="1493369319391" expanded="true" signature="2273:2379" ph="&lt;tile/&gt;" />
-            <marker date="1493369319391" expanded="true" signature="2290:2370" ph="&lt;properties/&gt;" />
-            <marker date="1493369319391" expanded="true" signature="2381:2493" ph="&lt;tile/&gt;" />
-            <marker date="1493369319391" expanded="true" signature="2398:2484" ph="&lt;properties/&gt;" />
-            <marker date="1493369319391" expanded="true" signature="2495:2596" ph="&lt;tile/&gt;" />
-            <marker date="1493369319391" expanded="true" signature="2512:2587" ph="&lt;properties/&gt;" />
+            <element signature="e#345#355#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/requirements.txt">
+    <entry file="file://$PROJECT_DIR$/aiopener.egg-info/SOURCES.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="1" column="5" lean-forward="false" selection-start-line="1" selection-start-column="5" selection-end-line="1" selection-end-column="5" />
-          <folding />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/aiopener/aiopener.py">
+    <entry file="file://$PROJECT_DIR$/aiopener.egg-info/PKG-INFO">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="233" column="16" lean-forward="false" selection-start-line="233" selection-start-column="16" selection-end-line="233" selection-end-column="16" />
-          <folding />
+        <state relative-caret-position="136">
+          <caret line="8" column="20" lean-forward="true" selection-start-line="8" selection-start-column="20" selection-end-line="8" selection-end-column="20" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/examples/pygame/test.py">
+    <entry file="file://$PROJECT_DIR$/aiopener/server/server.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" column="0" lean-forward="true" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/examples/pygame/maze_runner/maze_runner.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="31">
-          <caret line="14" column="28" lean-forward="true" selection-start-line="14" selection-start-column="28" selection-end-line="14" selection-end-column="28" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/aiopener/spygame.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-102">
+        <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#279#318#0" expanded="true" />
+            <element signature="e#345#355#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/aiopener/client/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="3" lean-forward="true" selection-start-line="2" selection-start-column="3" selection-end-line="2" selection-end-column="3" />
+        <state relative-caret-position="187">
+          <caret line="11" column="0" lean-forward="false" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/logo.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
+    <entry file="file://$PROJECT_DIR$/requirements.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="3" column="4" lean-forward="false" selection-start-line="3" selection-start-column="4" selection-end-line="3" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Program Files/Anaconda3/Lib/site-packages/scipy/interpolate/polyint.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="463" column="6" lean-forward="false" selection-start-line="463" selection-start-column="6" selection-end-line="463" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/pygame/simple_2d_platformer/simple_2d_platformer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="20" column="70" lean-forward="false" selection-start-line="20" selection-start-column="70" selection-end-line="20" selection-end-column="70" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/pygame/simple_2d_platformer/vikings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="233">
+          <caret line="505" column="21" lean-forward="false" selection-start-line="505" selection-start-column="21" selection-end-line="505" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/pygame/maze_runner/maze_runner.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="164">
+          <caret line="31" column="0" lean-forward="false" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
+          <folding>
+            <element signature="e#319#402#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/aiopener/client/client.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="493">
+          <caret line="29" column="0" lean-forward="false" selection-start-line="26" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
+          <folding>
+            <element signature="e#391#430#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/aiopener/spygame.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="46">
+          <caret line="685" column="52" lean-forward="true" selection-start-line="685" selection-start-column="52" selection-end-line="685" selection-end-column="52" />
+          <folding>
+            <element signature="e#279#318#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/aiopener/aiopener.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="258" column="106" lean-forward="false" selection-start-line="258" selection-start-column="106" selection-end-line="258" selection-end-column="106" />
+          <folding>
+            <element signature="e#292#305#0" expanded="true" />
+          </folding>
+        </state>
       </provider>
     </entry>
   </component>
