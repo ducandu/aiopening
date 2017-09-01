@@ -31,12 +31,12 @@ def get_all_subclasses(_class):
     return _class.__subclasses__() + [g for s in _class.__subclasses__() for g in get_all_subclasses(s)]
 
 
-# collects all of aiopening's Algorithm classes and stores them in two structures:
+# collects all of aiopening's AlgorithmOld classes and stores them in two structures:
 # a) a JSON list that can be sent (as is) back to client asking for "list algorithms"
-# b) a algos_by_name where we can lookup (by Algorithm class name),
+# b) a algos_by_name where we can lookup (by AlgorithmOld class name),
 #    which methods are clientcallable (field: 'methodNames') and the class itself (field: 'class')
 """def collect_algorithm_class_info():
-    algos = get_all_subclasses(aiopening.Algorithm)
+    algos = get_all_subclasses(aiopening.AlgorithmOld)
     json_algo_class_list = []
     algo_dict_by_name = {}  # key: WorldManager class name; values: list of ClientCallableMethods (method names)
     # collect each WM's name and pyrateclientcallable methods to the returned json

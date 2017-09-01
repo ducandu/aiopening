@@ -14,9 +14,11 @@
       <w>blit</w>
       <w>blits</w>
       <w>clientcallable</w>
+      <w>coords</w>
       <w>debind</w>
       <w>dockable</w>
       <w>dont</w>
+      <w>dtype</w>
       <w>ducandu</w>
       <w>erver</w>
       <w>eural</w>
@@ -54,6 +56,8 @@
       <w>uint</w>
       <w>undock</w>
       <w>undocks</w>
+      <w>unflatten</w>
+      <w>unflattened</w>
       <w>unfollow</w>
       <w>unpause</w>
       <w>unregister</w>

@@ -50,7 +50,7 @@ class UserRecord(object):  # persistent.Persistent):
 
         # stores all Projects under their respective 'project name' (a str determined by the client in 'new project' messages)
         self.projects = {}  # persistent.mapping.PersistentMapping()
-        # dict with the different algorithms this user might have running (or ran in the past); key=algo Id (int) unique per user; value=an Algorithm object
+        # dict with the different algorithms this user might have running (or ran in the past); key=algo Id (int) unique per user; value=an AlgorithmOld object
         self.algorithms = {}  # persistent.mapping.PersistentMapping()
 
 
@@ -562,7 +562,7 @@ class ShineProtocol(WebSocketServerProtocol):
             ("algorithmName" in json_obj, ShineProtocol.PROTOCOL_ERROR_FIELD_MISSING, False, "algorithmName"),
             (self.currentProject is not None, ShineProtocol.PROTOCOL_ERROR_NO_PROJECT_SET, False, "Cannot run algorithm."),
             (json_obj["algorithmName"] in self.currentProject.algorithms, ShineProtocol.PROTOCOL_ERROR_ITEM_DOESNT_EXIST, False,
-                "Algorithm '{:s}'".format(json_obj["algorithmName"]), "project '{:s}'".format(self.currentProject.name)),
+                "AlgorithmOld '{:s}'".format(json_obj["algorithmName"]), "project '{:s}'".format(self.currentProject.name)),
             (("options" not in json_obj) or isinstance(json_obj["options"], dict), ShineProtocol.PROTOCOL_ERROR_FIELD_HAS_WRONG_TYPE, False, "options", "dict"),
         ])
 

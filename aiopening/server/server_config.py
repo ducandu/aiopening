@@ -16,6 +16,6 @@ SHINE_SERVER_MAX_LEN_MESSAGE = 65536-1  # max len of an incoming json string (no
 # project settings
 SHINE_SERVER_MAX_LEN_USERNAME = 32  # the max len of a username for aiopening client/server sessions
 SHINE_SERVER_MAX_LEN_PROJECT_NAME = 32  # the max len of a name for a Project (projects are stored under a unique-per-user name)
-SHINE_SERVER_MAX_ALGORITHM_NAME = 32  # the max len of a name for an Algorithm object (worlds are stored under a unique name per-user-per-project)
+SHINE_SERVER_MAX_ALGORITHM_NAME = 32  # the max len of a name for an AlgorithmOld object (worlds are stored under a unique name per-user-per-project)
 SHINE_SERVER_MAX_LEN_WORLD_NAME = 32  # the max len of a name for a World object (algorithms are stored under a unique name per-user-per-project)
 
