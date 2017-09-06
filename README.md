@@ -1,28 +1,30 @@
-<img src="https://github.com/sven1977/aiopening/blob/master/logo.png" width="50">
+<img src="https://raw.githubusercontent.com/ducandu/aiopening/master/logo.png" width=75 height=75>
 
 # aiopening
 <b>opening up AI - unleash the fury :)</b>
 
 aiopening is a Python library for games and reinforcement learning (RL) algorithms with focus on deep-neural-nets and deep-RL.
-Games are defined as simple tmx files and each level of the game can be interpreted as a single MDP (see RL) that needs to be solved. aiopening comes with it's own 2D game engine ("spygame") written against Pygame.
-There will also be an MDP-solver-server (to solve the levels of different games) and a command line client, through which one can upload game/levels/MDPs to the server for MDP-solver jobs.
 
 ## who should use aiopening?
 <b>Answer</b>: people who ...
 - are interested in RL algorithm research
-- would like to test their ideas on simple 2D game environments (MDPs), which you can create using only a tiled map (tmx file)
-- would like to have the aiopening server try different algorithms and hyperparameters automatically on given MDPs and return the best solutions
+- are interested in applying RL algorithms to solve computer game related problems
+
 
 # Apex Unleash Project
 great things are about to come
 
 ## How to setup your environment to run experiments in aiopening on Win10
+
+aiopening only depends on the python3 libs: tensorflow/tensorflow-gpu
+and deepmind's sonnet library. Here is how to get setup with aiopening:
+
 1) Install Anaconda3 (Python 3.6 version) on your PC
 
 https://www.anaconda.com/download/
 
 2) Open an "Anaconda Prompt" from your Win start menu
-3) Create a new env and call it "rllab" by typing:
+3) Create a new env and call it "aiopening" by typing:
 
 ``>conda create -n aiopening python=3.6 numpy``
 
@@ -55,16 +57,26 @@ https://nitishmutha.github.io/tensorflow/2017/01/22/TensorFlow-with-gpu-for-wind
 >>> sess = tf.Session(config=tf.ConfigProto(log_device_placement=True))
 ```
 
-Check the printout after running the last command for things like:
-"(/gpu:0) -> (device: 0, name: GeForce GTX 980 ..."
-The name of your GPU may vary depending on your Nvidia GPU type.
+Check the printout after running the last command for mentions of:
+"(/gpu:0) -> (device: 0, name: GeForce GTX 980 ..."<br/>
+**NOTE:** The name of your GPU may vary depending on your Nvidia GPU type.
 
-9) Clone the sonnet source into your aiopening env:
-- `git clone http://github.com/deepmind/sonnet`
+9) Manually install deepmind's sonnet library in your aiopening env<br/>
+dm-sonnet is based on tensorflow and makes it very easy to build simple
+sub modules (e.g. a ConvNet unit) and then plug-and-play these modules to create
+larger and more complex NN topologies.
+
+- While still in your conda env named `aiopening`:
+do a `cd [any directory of your choice]`
+- `git clone http://github.com/deepmind/sonnet` or download and unzip
+sonnet directly from github: https://github.com/deepmind/sonnet/
 - Rename setup.py.temp into setup.py
-- Change the line project_name = '%%%PROJECT_NAME%%%' to project_name = 'dm-sonnet-gpu'
-- Rename the BUILD file into BUILD_test
-- Now try it: `python setup.py install` (this should do a basic Win10 install (no C++ code compiled))
+- In `setup.py`, change the line `project_name = '%%%PROJECT_NAME%%%'` to
+`project_name = 'dm-sonnet-gpu'`
+- Rename the `BUILD` file into `BUILD_test`
+- Now try in the directory of the `setup.py` file: `python setup.py install`.
+This should do a basic Win10 install (no C++ code compiled).
 
-10) WIP: Not done yet. More instructions to follow.
+10) WIP: Not done yet. More instructions to follow on how to install
+`aiopening` itself
 ...
