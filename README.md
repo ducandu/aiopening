@@ -1,4 +1,6 @@
-<img src="https://raw.githubusercontent.com/ducandu/aiopening/master/logo.png" width=75 height=75>
+<img src="https://raw.githubusercontent.com/ducandu/aiopening/master/logo.png" width=75 height=75><img src="https://raw.githubusercontent.com/ducandu/aiopening/master/logo.png" width=75 height=75><br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\\-------/<br/>
 
 # aiopening
 <b>opening up AI - unleash the fury :)</b>

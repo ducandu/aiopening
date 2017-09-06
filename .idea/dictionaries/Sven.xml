@@ -14,8 +14,12 @@
       <w>blit</w>
       <w>blits</w>
       <w>clientcallable</w>
+      <w>conv</w>
+      <w>convolutional</w>
       <w>coords</w>
+      <w>cpus</w>
       <w>debind</w>
+      <w>deepmind</w>
       <w>dockable</w>
       <w>dont</w>
       <w>dtype</w>
@@ -23,17 +27,23 @@
       <w>erver</w>
       <w>eural</w>
       <w>flippings</w>
+      <w>functionalities</w>
       <w>hyperparameters</w>
+      <w>initializers</w>
       <w>levelname</w>
       <w>logits</w>
       <w>lstm</w>
       <w>meth</w>
       <w>mothership</w>
+      <w>multithreaded</w>
       <w>ntelligent</w>
       <w>nvironment</w>
       <w>oodb</w>
       <w>osted</w>
+      <w>paddings</w>
+      <w>partitioners</w>
       <w>pausable</w>
+      <w>perceptron</w>
       <w>persistency</w>
       <w>platformer</w>
       <w>pushee</w>
@@ -42,6 +52,7 @@
       <w>pyrate</w>
       <w>pyrateclientcallable</w>
       <w>pytmx</w>
+      <w>regularizers</w>
       <w>renderable</w>
       <w>resizes</w>
       <w>rollout</w>
