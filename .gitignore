@@ -5,4 +5,4 @@
 /dist/
 *.pyc
 quintus_clients
-/.idea/
+.idea

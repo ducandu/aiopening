@@ -657,7 +657,7 @@ class LSTMGameObjectQLearner(BasicQLearner):
             cost = tf.reduce_mean(loss, name='cost')
             tf.summary.scalar('cost', cost)
 
-        # define training part of the graph
+        # define training part of the _graph
         # optimizer for training, using gradient clipping to control exploding gradients
         with tf.name_scope('train'):
             # get all trainable variables
@@ -683,7 +683,7 @@ class LSTMGameObjectQLearner(BasicQLearner):
         # and stick them into the new namedtuple
         graph = Graph(*[local_dict[each] for each in export_nodes])
 
-        return graph  # graph.inputs = inputs, graph.cost = cost, etc...
+        return graph  # _graph.inputs = inputs, _graph.cost = cost, etc...
 
     # runs the LSTM training procedure
     # - feeds in batch-size x num-steps x input-dim tensors into the network and receives only one output image after each input sequence

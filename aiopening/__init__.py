@@ -7,12 +7,16 @@
  (c) 2017 ducandu GmbH
 """
 
-# import all packs in all directories (one level down)
-# from pyrate.auxiliary import *
+# "global" classes (that should live in the ai. namespace directly)
+from aiopening.labs import Lab
+from aiopening.experiments import Experiment
+from aiopening.models import Model
 
-# import all modules in this directory
-#import aiopening.aiopening as aiopener
-from aiopening import ???
+# make sure these are available without having to specify them as separate imports
+import aiopening.modules
+import aiopening.envs
+import aiopening.algorithms
 
 # global pack vars
 _VERSION = 1  # 00.00.01 = 1
+

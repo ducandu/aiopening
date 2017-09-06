@@ -1,14 +1,16 @@
 """
  -------------------------------------------------------------------------
- AIOpening - __init__.py
+ AIOpening - labs/ec2_lab.py
  
- Defines all RL algorithms that live in aiopening
+ Defines an AWS EC2 specific lab.
   
- created: 2017/09/01 in PyCharm
+ created: 2017/09/05 in PyCharm
  (c) 2017 Sven - ducandu GmbH
  -------------------------------------------------------------------------
 """
 
-from .a3c import A3C
-from .base import Algorithm
+import aiopening as ai
 
+
+class EC2Lab(ai.Lab):
+    pass

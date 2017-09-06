@@ -1,14 +1,16 @@
 """
  -------------------------------------------------------------------------
- AIOpening - __init__.py
+ AIOpening - 
+ __init__.py
  
- Defines all RL algorithms that live in aiopening
+ !!TODO: add file description here!! 
   
  created: 2017/09/01 in PyCharm
  (c) 2017 Sven - ducandu GmbH
  -------------------------------------------------------------------------
 """
 
-from .a3c import A3C
-from .base import Algorithm
+from .base import Model
+
+__all__ = ["Model"]
 

@@ -10,9 +10,20 @@
  -------------------------------------------------------------------------
 """
 
+#TODO:from aiopening.labs import Lab
+import aiopening as ai
 from aiopening.envs.grid_world import GridWorld
-#from aiopening.modules.feed_forward_nn import MLP
+from aiopening.algorithms import A3C
 
+# create our lab to run RL experiments in
+lab = ai.Lab()
+
+# generate the environment, we would like to learn
 env = GridWorld("8x8")
+
+# generate an algorithm that should solve this env
+algo = A3C()
+
+# create an experiment
 
 #model =
